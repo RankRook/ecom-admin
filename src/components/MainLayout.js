@@ -71,7 +71,7 @@ const MainLayout = () => {
                   label: "Brand",
                 },
                 {
-                  key: "list-brand",
+                  key: "brand-list",
                   icon: <TbBrandBootstrap className="fs-4" />,
                   label: "Brand List",
                 },
@@ -81,7 +81,7 @@ const MainLayout = () => {
                   label: "Category",
                 },
                 {
-                  key: "list-category",
+                  key: "category-list",
                   icon: <TbCategory className="fs-4" />,
                   label: "Category List",
                 },
