@@ -33,7 +33,7 @@ const Addbrand = () => {
   };
   return (
     <div>
-      <h3 className="mb-4">Add Brand</h3>
+      <h3 className="mb-4 title">Add Brand</h3>
       <div className="mt-4">
         <form action="">
           <CustomInput type="text" label="Enter Brand Name" />

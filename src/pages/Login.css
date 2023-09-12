@@ -104,12 +104,11 @@ body, html {
   
 }
 
-a{
-  color: #5c7fda;
+.container .a{
   text-decoration: none;
 }
 
-a:hover {
+.container .a:hover {
   text-decoration: underline;
 }
 
@@ -144,6 +143,7 @@ a:hover {
   position: relative;
   float: right;
   right: 28px;
+  color: #5c7fda;
 }
 
 .dnthave{

@@ -1,9 +1,7 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import CustomInput from "../components/Custominput";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
-import { Stepper } from "react-form-stepper";
 import { InboxOutlined } from "@ant-design/icons";
 import { message, Upload } from "antd";
 const { Dragger } = Upload;
@@ -26,38 +24,34 @@ const props = {
     console.log("Dropped files", e.dataTransfer.files);
   },
 };
-const Addblog = () => {
+const Addproduct = () => {
   const [desc, setDesc] = useState();
   const handleDesc = (e) => {
     setDesc(e);
   };
   return (
     <div>
-      <h3 className="mb-4 title">Add Blog</h3>
-      <Stepper
-        steps={[
-          { label: "Details" },
-          { label: "Upload image" },
-          { label: "Finish" },
-        ]}
-        activeStep={1}
-      />
-      <div className="">
-        <form action="">
-          <CustomInput type="text" label="Enter Blog Title" />
-
+      <h3 className="mb-4 title">Add Product</h3>
+      <div>
+        <form>
+          <CustomInput type="text" label="Enter Product Title" />
+          <div className="mb-3">
+            <ReactQuill
+              theme="snow"
+              value={desc}
+              onChange={(evt) => {
+                handleDesc(evt);
+              }}
+            />
+          </div>
+          <CustomInput type="number" label="Enter Product Price"/>
           <select name="" className="form-control py-3 mb-3" id="">
-            <option value="">Select Blog Category</option>
+            <option value="">Select Brand</option>
           </select>
-          <ReactQuill
-            theme="snow"
-            value={desc}
-            onChange={(evt) => {
-              handleDesc(evt);
-            }}
-          />
-          <div className="mt-4">
-            <Dragger {...props}>
+          <select name="" className="form-control py-3 mb-3" id="">
+            <option value="">Select Category</option>
+          </select>
+          <Dragger {...props}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
               </p>
@@ -69,17 +63,16 @@ const Addblog = () => {
                 uploading company data or other banned files.
               </p>
             </Dragger>
-          </div>
-          <button
-            className="btn btn-success border-0 rounded-3 my-5"
+            <button 
+            className="btn btn-primary"
             type="submit"
-          >
-            Add Blog
-          </button>
+            >
+                Add Product
+            </button>
         </form>
       </div>
     </div>
   );
 };
 
-export default Addblog;
+export default Addproduct;

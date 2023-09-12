@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Login = () => {
   return (
     <>
-      <div class="animated bounceInDown">
+      <div class="login animated bounceInDown">
         <div class="container">
           <form name="form1" class="box" onsubmit="return checkStuff()">
             <h4>
@@ -27,7 +27,7 @@ const Login = () => {
               autocomplete="off"
             />
             <Link to="forgot-password">
-              <a href="/" class="forgetpass">
+              <a href="/" class="forgetpass" >
                 Forget Password?
               </a>
             </Link>

@@ -30,7 +30,7 @@ for (let i = 0; i < 46; i++) {
 const Brandlist = () => {
   return (
     <div>
-      <h3 className="mb-4">Brand List</h3>
+      <h3 className="mb-4 title">Brand List</h3>
       <Table columns={columns} dataSource={data1} />
     </div>
   );
