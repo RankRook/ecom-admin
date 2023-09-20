@@ -1,9 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Outlet } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { LuClipboardList } from "react-icons/lu";
 import { ImBlog } from "react-icons/im";
+import { FaClipboardList } from "react-icons/fa";
 import { TbBrandBlogger, TbBrandBootstrap, TbCategory } from "react-icons/tb";
 import {
   AiOutlineDashboard,
@@ -17,10 +20,10 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const navigate = useNavigate();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const navigate = useNavigate();
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -120,6 +123,11 @@ const MainLayout = () => {
                 },
               ],
             },
+            {
+              key: "enquiries",
+              icon: <FaClipboardList className="fs-4" />,
+              label: "Enquiries",
+            },
           ]}
         />
       </Sider>
@@ -186,12 +194,23 @@ const MainLayout = () => {
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
+            margin: "18px 16px",
             padding: 24,
             minHeight: 280,
             background: colorBgContainer,
           }}
         >
+          <ToastContainer
+            position="top-right"
+            autoClose={300}
+            hideProgressBar={false}
+            newestOnTop={true}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            theme="light"
+          />
           <Outlet />
         </Content>
       </Layout>

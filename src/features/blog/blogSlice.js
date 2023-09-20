@@ -1,42 +1,41 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import customerService from "./customerService";
+import blogService from "./blogService";
 
 
 const initialState = {
-  customers: [],
+  blogs: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
   message: "",
 };
 
-export const getUsers = createAsyncThunk(
-  "customer/get-customers",
+export const getBlogs = createAsyncThunk(
+  "blog/get-blogs",
   async (thunkAPI) => {
     try {
-      return await customerService.getUsers();
+      return await blogService.getBlogs();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const customerSlice = createSlice({
-  name: "users",
+export const blogSlice = createSlice({
+  name: "blogs",
   initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUsers.pending, (state) => {
+      .addCase(getBlogs.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUsers.fulfilled, (state, action) => {
+      .addCase(getBlogs.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.customers = action.payload
-        state.message = "success"
+        state.blogs = action.payload
       })
-      .addCase(getUsers.rejected, (state, action) => {
+      .addCase(getBlogs.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
@@ -45,4 +44,4 @@ export const customerSlice = createSlice({
   },
 });
 
-export default customerSlice.reducer;
+export default blogSlice.reducer;

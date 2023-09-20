@@ -4,8 +4,8 @@ import React, { useEffect } from "react";
 import "./Login.css";
 import { Link } from "react-router-dom";
 import Custominput from "../components/Custominput";
-import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useFormik } from "formik";
 import { useDispatch, useSelector,  } from "react-redux";
 import { login } from "../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -35,9 +35,7 @@ const Login = () => {
   useEffect(() => {
     if (!user == null || isSuccess) {
       navigate("admin");
-    } else {
-      alert("");
-    }
+    } 
   }, [user, isLoading, isError, isSuccess]);
   return (
     <>

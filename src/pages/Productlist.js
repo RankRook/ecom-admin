@@ -1,36 +1,71 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
-import { Table } from "antd";
-import {BiEdit} from "react-icons/bi"
-import {AiFillDelete} from "react-icons/ai"
+import React, { useEffect } from "react";
+import { BiEdit } from "react-icons/bi";
+import { AiFillDelete } from "react-icons/ai";
+import { Segmented, Space, Switch, Table, Typography } from 'antd';
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../features/product/productSlice";
+
 const columns = [
   {
     title: "SNo",
     dataIndex: "key",
   },
   {
-    title: "Name",
-    dataIndex: "name",
+    title: "Title",
+    dataIndex: "title",
+    sorter: (a, b) => a.title.length - b.title.length,
   },
   {
-    title: "Product",
-    dataIndex: "product",
+    title: "Brand",
+    dataIndex: "brand",
+    sorter: (a, b) => a.brand.length - b.brand.length,
   },
   {
-    title: "Status",
-    dataIndex: "status",
+    title: "Category",
+    dataIndex: "category",
+    sorter: (a, b) => a.category.length - b.category.length,
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+    sorter: (a, b) => a.price - b.price,
+  },
+  {
+    title: "Quantity",
+    dataIndex: "quantity",
+    sorter: (a, b) => a.quantity - b.quantity,
+  },
+  {
+    title: 'Action',
+    width: 150,
+
+    render: () => (
+      <Space size="middle">
+        <Typography.Link className="fs-3 "><BiEdit/></Typography.Link>
+        <Typography.Link className="ms-3 fs-3 "><AiFillDelete/></Typography.Link>
+      </Space>
+    ),
   },
 ];
-const data1 = [];
-for (let i = 0; i < 46; i++) {
-  data1.push({
-    key: i,
-    name: `Edward King ${i}`,
-    product: 32,
-    status: `London, Park Lane no. ${i}`,
-  });
-}
+
 const Productlist = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [dispatch]);
+  const productstate = useSelector((state) => state.product.products);
+  const data1 = [];
+  for (let i = 0; i < productstate.length; i++) {
+    data1.push({
+      key: i + 1,
+      title: productstate[i].title,
+      brand: productstate[i].brand,
+      category: productstate[i].category,
+      price: `${productstate[i].price}`,
+      quantity: `${productstate[i].quantity}`,
+    });
+  }
   return (
     <div>
       <h3 className="mb-4 title">Product List</h3>
