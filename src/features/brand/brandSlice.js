@@ -26,6 +26,7 @@ export const createBrand = createAsyncThunk(
 
 const initialState = {
   brands: [],
+  createdBrand:[],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -57,8 +58,9 @@ export const brandSlice = createSlice({
       })
       .addCase(createBrand.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.isError = false;
         state.isSuccess = true;
-        state.brands = action.payload
+        state.createdBrand = action.payload
       })
       .addCase(createBrand.rejected, (state, action) => {
         state.isLoading = false;

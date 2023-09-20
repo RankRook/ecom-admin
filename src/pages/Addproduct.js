@@ -12,7 +12,7 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getBrands } from "../features/brand/brandSlice";
 import { getCategorys } from "../features/category/categorySlice";
-import { createProducts } from "../features/product/productSlice";
+import { createProduct } from "../features/product/productSlice";
 import { deleteImg, uploadImg } from "../features/upload/uploadSlice";
 import "./addproduct.css";
 
@@ -31,6 +31,15 @@ const Addproduct = () => {
   const navigate = useNavigate();
   const [images, setImages] = useState([]);
 
+  const handleImageDeletion = () => {
+    // Gọi action để xóa hình ảnh từ `imgState`
+    imgState.forEach((image) => {
+      dispatch(deleteImg(image.public_id));
+    });
+    // Cập nhật lại state `images` thành mảng rỗng
+    setImages([]);
+  };
+
   useEffect(() => {
     dispatch(getBrands());
     dispatch(getCategorys());
@@ -40,10 +49,19 @@ const Addproduct = () => {
   const categoryState = useSelector((state) => state.category.categorys);
   const imgState = useSelector((state) => state.upload.images);
 
-  console.log(brandState);
-  console.log(imgState);
-  const img = [];
+  // const newProduct = useSelector((state) => state.product);
+  // const { isSuccess, isError, isLoading, createProducts } = newProduct;
 
+  // useEffect(() => {
+  //   if (isSuccess && createProducts ) {
+  //     toast.success("Product Added Successfully!");
+  //   }
+  //   if (isError) {
+  //     toast.error("Something Went Wrong");
+  //   }
+  // }, [isSuccess, isError, isLoading, createProducts]);
+
+  const img = [];
   imgState.forEach((i) => {
     img.push({
       public_id: i.public_id,
@@ -68,15 +86,15 @@ const Addproduct = () => {
     validationSchema: schema,
 
     onSubmit: (values) => {
-      // alert(toast.success('Product Add Successfully'));
-      toast.success(`Add successfully` );
-      dispatch(createProducts(values));
-      setImages(null);
+      toast.success("Product Added Successfully!")
+      dispatch(createProduct(values));
+      handleImageDeletion(); // Xóa hình ảnh sau khi submit
       formik.resetForm();
       setTimeout(() => {
         navigate("/admin/product-list");
-      }, 2000);
+      }, 1000);
     },
+    
   });
 
   return (
