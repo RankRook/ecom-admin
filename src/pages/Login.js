@@ -44,7 +44,7 @@ const Login = () => {
           <form
             name="form1"
             className="box"
-            onsubmit="return checkStuff()"
+            // onSubmit="return checkStuff()"
             onSubmit={formik.handleSubmit}
           >
             <h4>

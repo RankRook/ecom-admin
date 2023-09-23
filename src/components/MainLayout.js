@@ -6,6 +6,7 @@ import { Outlet } from "react-router-dom";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { LuClipboardList } from "react-icons/lu";
 import { ImBlog } from "react-icons/im";
+import {RiCouponLine} from "react-icons/ri"
 import { FaClipboardList } from "react-icons/fa";
 import { TbBrandBlogger, TbBrandBootstrap, TbCategory } from "react-icons/tb";
 import {
@@ -120,6 +121,23 @@ const MainLayout = () => {
                   key: "blog-category-list",
                   icon: <TbBrandBlogger className="fs-4" />,
                   label: "Blog Category List",
+                },
+              ],
+            },
+            {
+              key: "marketing",
+              icon: <RiCouponLine className="fs-4" />,
+              label: "Marketing",
+              children: [
+                {
+                  key: "coupon",
+                  icon: <ImBlog className="fs-4" />,
+                  label: "Add Coupon",
+                },
+                {
+                  key: "coupon-list",
+                  icon: <RiCouponLine className="fs-4" />,
+                  label: "Coupon List",
                 },
               ],
             },

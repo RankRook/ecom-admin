@@ -12,8 +12,14 @@ const createBlogcat = async(data) =>{
     return response.data
 }
 
+const deleteBlogcat = async(id) =>{
+    const response = await axios.delete(`${base_url}blogcategory/${id}`, config)
+    return response.data
+}
+
 const blogcatService ={
     getBlogcats,
-    createBlogcat
+    createBlogcat,
+    deleteBlogcat
 }
 export default blogcatService

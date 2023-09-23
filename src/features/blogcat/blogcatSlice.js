@@ -1,15 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import blogcatService from "./blogcatService";
-
-
-const initialState = {
-  blogcats: [],
-  createdBlogcat:[],
-  isError: false,
-  isLoading: false,
-  isSuccess: false,
-  message: "",
-};
 
 export const getBlogcats = createAsyncThunk(
   "blogcat/get-blogcats",
@@ -33,6 +23,27 @@ export const createBlogcats = createAsyncThunk(
   }
 );
 
+export const deleteBlogcat = createAsyncThunk(
+  "blogcat/delete-blogcat",
+  async(id, thunkAPI)=>{
+    try{
+      return await blogcatService.deleteBlogcat(id)
+    }catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
+export const resetState = createAction("Reset_all");
+
+const initialState = {
+  blogcats: [],
+  isError: false,
+  isLoading: false,
+  isSuccess: false,
+  message: "",
+};
+
 export const blogcatSlice = createSlice({
   name: "blogcats",
   initialState: initialState,
@@ -45,13 +56,14 @@ export const blogcatSlice = createSlice({
       .addCase(getBlogcats.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.blogcats = action.payload
+        state.isError = false;
+        state.blogcats = action.payload;
       })
       .addCase(getBlogcats.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error
+        state.message = action.error;
       })
       .addCase(createBlogcats.pending, (state) => {
         state.isLoading = true;
@@ -60,14 +72,30 @@ export const blogcatSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
-        state.createdBlogcat = action.payload
+        state.createdBlogcat = action.payload;
       })
       .addCase(createBlogcats.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error
-      });
+        state.message = action.error;
+      })
+      .addCase(deleteBlogcat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteBlogcat.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deletedBlogcat = action.payload;
+      })
+      .addCase(deleteBlogcat.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(resetState, () => initialState);
   },
 });
 

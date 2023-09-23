@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { React, useEffect, useState } from "react";
 import CustomInput from "../components/Custominput";
@@ -7,15 +8,28 @@ import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlogcats } from "../features/blogcat/blogcatSlice";
+import { createBlogcats, resetState } from "../features/blogcat/blogcatSlice";
 
 let schema = yup.object().shape({
-  title: yup.string().required("Title Brand is Required"),
+  title: yup.string().required("Title Category is Required"),
 });
 
 const Addblogcat = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const newBlogcat = useSelector((state) => state.blogcat);
+  const { isSuccess, isError, isLoading, createdBlogcat } = newBlogcat;
+
+  useEffect(() => {
+    if (isSuccess && createdBlogcat ) {
+      toast.success("Product Added Successfully!");
+    }
+    if (isError) {
+      toast.error("Something Went Wrong");
+    }
+  }, [isSuccess, isError, isLoading]);
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -23,10 +37,11 @@ const Addblogcat = () => {
     validationSchema: schema,
 
     onSubmit: (values) => {
-      toast.success("Blog category Added Successfully!")
+
       dispatch(createBlogcats(values));
       formik.resetForm();
       setTimeout(() => {
+        dispatch(resetState())
         navigate("/admin/blog-category-list");
       }, 1000);
     },

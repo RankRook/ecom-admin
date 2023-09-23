@@ -6,7 +6,7 @@ const Resetpassword = () => {
       <div class="animated bounceInDown">
         <div class="container-reset">
           
-          <form name="form1" class="box" onsubmit="return checkStuff()">
+          <form name="form1" class="box" onSubmit="return checkStuff()">
             <h4>
               Admin<span>Dashboard</span>
             </h4>
