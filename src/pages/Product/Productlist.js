@@ -4,7 +4,7 @@ import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Segmented, Space, Switch, Table, Typography } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "../features/product/productSlice";
+import { getProducts } from "../../features/product/productSlice";
 
 const columns = [
   {
@@ -39,13 +39,7 @@ const columns = [
   {
     title: 'Action',
     width: 150,
-
-    render: () => (
-      <Space size="middle">
-        <Typography.Link className="fs-3 "><BiEdit/></Typography.Link>
-        <Typography.Link className="ms-3 fs-3 "><AiFillDelete/></Typography.Link>
-      </Space>
-    ),
+    dataIndex: "action",
   },
 ];
 
@@ -64,6 +58,18 @@ const Productlist = () => {
       category: productstate[i].category,
       price: `${productstate[i].price}`,
       quantity: `${productstate[i].quantity}`,
+      action: (
+        <>
+          <button className="ms-2 fs-3 text-danger bg-transparent border-0">
+            <BiEdit />
+          </button>
+          <button
+            className="ms-2 fs-3 text-danger bg-transparent border-0"      
+          >
+            <AiFillDelete />
+          </button>
+        </>
+      ),
     });
   }
   return (

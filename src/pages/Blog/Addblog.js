@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { React, useEffect, useState } from "react";
-import CustomInput from "../components/Custominput";
+import CustomInput from "../../components/CustomInput";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 import ReactQuill from "react-quill";
@@ -10,9 +10,9 @@ import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogcats } from "../features/blogcat/blogcatSlice";
-import { createBlog } from "../features/blog/blogSlice";
-import { deleteImg, uploadImg } from "../features/upload/uploadSlice";
+import { getBlogcats } from "../../features/blogcat/blogcatSlice";
+import { createBlog } from "../../features/blog/blogSlice";
+import { deleteImg, uploadImg } from "../../features/upload/uploadSlice";
 
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),

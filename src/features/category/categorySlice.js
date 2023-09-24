@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import categoryService from "./categoryService";
 
 
@@ -33,6 +33,42 @@ export const createCategory = createAsyncThunk(
   }
 );
 
+export const getACategory = createAsyncThunk(
+  "category/get-category",
+  async (id, thunkAPI) => {
+    try {
+      return await categoryService.getACategory(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateCategory = createAsyncThunk(
+  "category/update-category",
+  async (categoryData, thunkAPI) => {
+    try {
+      return await categoryService.updateCategory(categoryData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteCategory = createAsyncThunk(
+  "category/delete-category",
+  async(id, thunkAPI)=>{
+    try{
+      return await categoryService.deleteCategory(id)
+    }catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
+export const resetState = createAction("Reset_all");
+
+
 export const categorySlice = createSlice({
   name: "categorys",
   initialState: initialState,
@@ -66,7 +102,53 @@ export const categorySlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error
-      });
+      })
+      .addCase(getACategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getACategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.categoryName = action.payload.title
+      })
+      .addCase(getACategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error
+      })
+      .addCase(updateCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.updatedCategory = action.payload
+      })
+      .addCase(updateCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error
+      })
+      .addCase(deleteCategory.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deletedCategory = action.payload;
+      })
+      .addCase(deleteCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(resetState, () => initialState);;
   },
 });
 

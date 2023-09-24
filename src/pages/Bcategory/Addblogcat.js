@@ -1,14 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { React, useEffect, useState } from "react";
-import CustomInput from "../components/Custominput";
+import CustomInput from "../../components/CustomInput";
 import "react-quill/dist/quill.snow.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { createBlogcats, resetState } from "../features/blogcat/blogcatSlice";
+import {
+  createBlogcats,
+  getABlogcat,
+  resetState,
+  updateBlogcat,
+} from "../../features/blogcat/blogcatSlice";
 
 let schema = yup.object().shape({
   title: yup.string().required("Title Category is Required"),
@@ -17,12 +22,22 @@ let schema = yup.object().shape({
 const Addblogcat = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const getBlogcatId = location.pathname.split("/")[3];
 
   const newBlogcat = useSelector((state) => state.blogcat);
-  const { isSuccess, isError, isLoading, createdBlogcat } = newBlogcat;
+  const { isSuccess, isError, isLoading, createdBlogcat, blogcatName } =
+    newBlogcat;
 
   useEffect(() => {
-    if (isSuccess && createdBlogcat ) {
+    if (getBlogcatId !== undefined) {
+      dispatch(getABlogcat(getBlogcatId));
+      formik.values.title = blogcatName;
+    }
+  }, [getBlogcatId]);
+
+  useEffect(() => {
+    if (isSuccess && createdBlogcat) {
       toast.success("Product Added Successfully!");
     }
     if (isError) {
@@ -31,26 +46,38 @@ const Addblogcat = () => {
   }, [isSuccess, isError, isLoading]);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: "",
+      title: blogcatName || "",
     },
     validationSchema: schema,
 
     onSubmit: (values) => {
-
-      dispatch(createBlogcats(values));
-      formik.resetForm();
-      setTimeout(() => {
-        dispatch(resetState())
-        navigate("/admin/blog-category-list");
-      }, 1000);
+      if (getBlogcatId !== undefined) {
+        const data = { id: getBlogcatId, blogcatData: values };
+        dispatch(updateBlogcat(data));
+        setTimeout(() => {
+          toast.success("Blog category Updated Succesfully");
+          navigate("/admin/blog-category-list");
+          dispatch(resetState());
+        }, 1000);
+      } else {
+        dispatch(createBlogcats(values));
+        formik.resetForm();
+        setTimeout(() => {
+          navigate("/admin/blog-category-list");
+          dispatch(resetState());
+        }, 1000);
+      }
     },
   });
   return (
     <div>
-      <h3 className="mb-4 title">Add Blog</h3>
+      <h3 className="mb-4 title">
+        {getBlogcatId !== undefined ? "Edit" : "Add"} Blog
+      </h3>
       <div className="mt-4">
-      <form action="" onSubmit={formik.handleSubmit}>
+        <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput
             type="text"
             id="title"
@@ -66,7 +93,7 @@ const Addblogcat = () => {
             className="btn btn-success border-0 rounded-3 my-5"
             type="submit"
           >
-            Add Blog Category
+            {getBlogcatId !== undefined ? "Edit" : "Add"} Blog Category
           </button>
         </form>
       </div>

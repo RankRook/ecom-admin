@@ -2,14 +2,17 @@
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
-import { Space, Table, Typography } from "antd";
+import { Segmented, Space, Switch, Table, Typography } from "antd";
+import {
+  deleteCategory,
+  getCategorys,
+} from "../../features/category/categorySlice";
 import { useDispatch, useSelector } from "react-redux";
-import { getBlogcats, deleteBlogcat } from "../features/blogcat/blogcatSlice";
-import CustomModal from "../components/CustomModal";
 import { Link } from "react-router-dom";
+import CustomModal from "../../components/CustomModal";
+
 const columns = [
   {
-    width: 100,
     title: "SNo",
     dataIndex: "key",
   },
@@ -18,20 +21,21 @@ const columns = [
     dataIndex: "title",
     sorter: (a, b) => a.title.length - b.title.length,
   },
+
   {
     title: "Action",
     dataIndex: "action",
     width: 150,
-
   },
 ];
-const Blogcatlist = () => {
+
+const Categorylist = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const [blogCatId, setblogCatId] = useState("");
+  const [categoryId, setcategoryId] = useState("");
   const showModal = (e) => {
     setOpen(true);
-    setblogCatId(e);
+    setcategoryId(e);
   };
 
   const hideModal = () => {
@@ -39,30 +43,34 @@ const Blogcatlist = () => {
   };
 
   useEffect(() => {
-    dispatch(getBlogcats());
+    dispatch(getCategorys());
   }, [dispatch]);
 
-  const deleteABlogcat = (e) => {
-    dispatch(deleteBlogcat(e));
+  const deleteACategory = (e) => {
+    dispatch(deleteCategory(e));
     setOpen(false);
     setTimeout(() => {
-      dispatch(getBlogcats());
+      dispatch(getCategorys());
     }, 100);
   };
 
- 
-  const blogcatstate = useSelector((state) => state.blogcat.blogcats);
+  const categoryState = useSelector((state) => state.category.categorys);
   const data1 = [];
-  for (let i = 0; i < blogcatstate.length; i++) {
+  for (let i = 0; i < categoryState.length; i++) {
     data1.push({
       key: i + 1,
-      title: blogcatstate[i].title,
+      title: categoryState[i].title,
       action: (
         <>
-          <BiEdit />
+          <Link
+            className="ms-3 fs-3 text-danger"
+            to={`/admin/category/${categoryState[i]._id}`}
+          >
+            <BiEdit />
+          </Link>
           <button
             className="ms-3 fs-3 text-danger bg-transparent border-0"
-            onClick={() => showModal(blogcatstate[i]._id)}
+            onClick={() => showModal(categoryState[i]._id)}
           >
             <AiFillDelete />
           </button>
@@ -72,17 +80,17 @@ const Blogcatlist = () => {
   }
   return (
     <div>
-      <h3 className="mb-4 title">Blogcat List</h3>
+      <h3 className="mb-4 title">category List</h3>
       <Table columns={columns} dataSource={data1} />
       <CustomModal
         hideModal={hideModal}
         open={open}
         performAction={() => {
-          deleteABlogcat(blogCatId);
+          deleteACategory(categoryId);
         }}
-        title="Are you sure you want to delete this blog category?"
+        title="Are you sure you want to delete this category?"
       />
     </div>
   );
 };
-export default Blogcatlist;
+export default Categorylist;

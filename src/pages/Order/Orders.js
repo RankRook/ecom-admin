@@ -5,7 +5,7 @@ import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Space, Table, Typography } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
-import { getOrders } from "../features/auth/authSlice";
+import { getOrders } from "../../features/auth/authSlice";
 
 const columns = [
   {
@@ -31,13 +31,9 @@ const columns = [
   },
   {
     title: 'Action',
+    dataIndex: "action",
     width: 150,
-    render: () => (
-      <Space size="middle">
-        <Typography.Link className="fs-3 "><BiEdit/></Typography.Link>
-        <Typography.Link className="ms-3 fs-3 "><AiFillDelete/></Typography.Link>
-      </Space>
-    ),
+
   },
 ];
 
@@ -64,6 +60,18 @@ const Order = () => {
       }),
       amount: orderState[i].paymentIntent.amount,
       date: new Date(orderState[i].createdAt).toDateString(),
+      action: (
+        <>
+          <button className="ms-2 fs-3 text-danger bg-transparent border-0">
+            <BiEdit />
+          </button>
+          <button
+            className="ms-2 fs-3 text-danger bg-transparent border-0"      
+          >
+            <AiFillDelete />
+          </button>
+        </>
+      ),
     });
   }
   return (

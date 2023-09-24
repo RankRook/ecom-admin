@@ -23,6 +23,29 @@ export const createBlogcats = createAsyncThunk(
   }
 );
 
+
+export const getABlogcat = createAsyncThunk(
+  "blogcat/get-blogcat",
+  async (id, thunkAPI) => {
+    try {
+      return await blogcatService.getABlogcat(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateBlogcat = createAsyncThunk(
+  "blogcat/update-blogcat",
+  async (blogcatData, thunkAPI) => {
+    try {
+      return await blogcatService.updateBlogcat(blogcatData);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const deleteBlogcat = createAsyncThunk(
   "blogcat/delete-blogcat",
   async(id, thunkAPI)=>{
@@ -79,6 +102,36 @@ export const blogcatSlice = createSlice({
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+      })
+      .addCase(getABlogcat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getABlogcat.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.blogcatName = action.payload.title
+      })
+      .addCase(getABlogcat.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error
+      })
+      .addCase(updateBlogcat.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateBlogcat.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.updatedBlogcat = action.payload
+      })
+      .addCase(updateBlogcat.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error
       })
       .addCase(deleteBlogcat.pending, (state) => {
         state.isLoading = true;

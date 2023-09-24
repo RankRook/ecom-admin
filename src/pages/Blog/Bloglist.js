@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
 import { Segmented, Space, Switch, Table, Typography } from 'antd';
-import { getBlogs} from "../features/blog/blogSlice";
+import { getBlogs} from "../../features/blog/blogSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { Link} from "react-router-dom"
 const columns = [
   {
     title: "SNo",
@@ -24,13 +24,8 @@ const columns = [
   
   {
     title: 'Action',
-    width: 150,
-    render: () => (
-      <Space size="middle">
-        <Typography.Link className="fs-3 "><BiEdit/></Typography.Link>
-        <Typography.Link className="ms-3 fs-3 "><AiFillDelete/></Typography.Link>
-      </Space>
-    ),
+    width: 150, 
+    dataIndex: "action",
   },
 ];
 
@@ -46,6 +41,21 @@ const Bloglist = () => {
       key: i + 1,
       title: blogstate[i].title,
       category: blogstate[i].category,
+      action: (
+        <>
+          <Link
+            className="ms-3 fs-3 text-danger"
+            to={`/admin/brand/${blogstate[i]._id}`}
+          >
+            <BiEdit />
+          </Link>
+          <button
+            className="ms-2 fs-3 text-danger bg-transparent border-0"      
+          >
+            <AiFillDelete />
+          </button>
+        </>
+      ),
     });
   }
   return (

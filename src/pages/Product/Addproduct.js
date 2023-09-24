@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import CustomInput from "../components/Custominput";
+import CustomInput from "../../components/CustomInput";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 import ReactQuill from "react-quill";
@@ -10,10 +10,10 @@ import Dropzone from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { getBrands } from "../features/brand/brandSlice";
-import { getCategorys } from "../features/category/categorySlice";
-import { createProduct } from "../features/product/productSlice";
-import { deleteImg, uploadImg } from "../features/upload/uploadSlice";
+import { getBrands } from "../../features/brand/brandSlice";
+import { getCategorys } from "../../features/category/categorySlice";
+import { createProduct } from "../../features/product/productSlice";
+import { deleteImg, uploadImg } from "../../features/upload/uploadSlice";
 import "./addproduct.css";
 
 

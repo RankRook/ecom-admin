@@ -3,11 +3,11 @@
 import React, { useEffect } from "react";
 import "./Login.css";
 import { Link } from "react-router-dom";
-import Custominput from "../components/Custominput";
+import CustomInput from "../../components/CustomInput";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useDispatch, useSelector,  } from "react-redux";
-import { login } from "../features/auth/authSlice";
+import { login } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const Login = () => {
             <div className="error text-center">
               {message.message === "Rejected"?"You are not an Admin" : ""}
             </div>
-            <Custominput
+            <CustomInput
               classname="input"
               type="text"
               name="email"
@@ -66,7 +66,7 @@ const Login = () => {
             {formik.touched.email && formik.errors.email ? (
               <div style={{ color: "red" }}>{formik.errors.email}</div>
             ) : null}
-            <Custominput
+            <CustomInput
               classname="input"
               type="password"
               name="password"
