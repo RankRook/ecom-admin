@@ -7,12 +7,13 @@ import { toast } from "react-toastify";
 import ReactQuill from "react-quill";
 import * as yup from "yup";
 import Dropzone from "react-dropzone";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getBlogcats } from "../../features/blogcat/blogcatSlice";
-import { createBlog } from "../../features/blog/blogSlice";
+import { createBlog, getABlog, resetState, updateBlog } from "../../features/blog/blogSlice";
 import { deleteImg, uploadImg } from "../../features/upload/uploadSlice";
+import { getCategorys } from "../../features/category/categorySlice";
 
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
@@ -23,7 +24,32 @@ let schema = yup.object().shape({
 const Addblog = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const getBlogId = location.pathname.split("/")[3];
+  const imgState = useSelector((state) => state.upload.images);
+  const blogcatState = useSelector((state) => state.blogcat.blogcats);
+  const blogState = useSelector((state) => state.blog);
+  const {
+    createdBlog,
+    blogName,
+    blogDesc,
+    blogCategory,
+    blogImages,
+    updatedBlog,
+  } = blogState;
   const [images, setImages] = useState([]);
+  useEffect(() => {
+    if (getBlogId !== undefined) {
+      dispatch(getABlog(getBlogId));
+      img.push(blogImages);
+    } else {
+      dispatch(resetState());
+    }
+  }, [getBlogId]);
+  useEffect(() => {
+    dispatch(resetState());
+    dispatch(getCategorys());
+  }, []);
 
   const handleImageDeletion = () => {
     // Gọi action để xóa hình ảnh từ `imgState`
@@ -38,8 +64,6 @@ const Addblog = () => {
     dispatch(getBlogcats());
   }, []);
 
-  const blogcatState = useSelector((state) => state.blogcat.blogcats);
-  const imgState = useSelector((state) => state.upload.images);
 
   const img = [];
   imgState.forEach((i) => {
@@ -51,31 +75,42 @@ const Addblog = () => {
 
   useEffect(() => {
     formik.values.images = img;
-  }, [img]);
+  }, [blogImages]);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: "",
-      description: "",
-      category: "",
+      title: blogName || "",
+      description: blogDesc || "",
+      blogcat: blogCategory || "",
       images: "[]",
     },
     validationSchema: schema,
 
     onSubmit: (values) => {
-      toast.success("Blog Added Successfully!");
-      dispatch(createBlog(values));
-      handleImageDeletion(); // Xóa hình ảnh sau khi submit
-      formik.resetForm();
-      setTimeout(() => {
-        navigate("/admin/blog-list");
-      }, 1000);
+      if (getBlogId !== undefined) {
+        const data = { id: getBlogId, blogData: values };
+        dispatch(updateBlog(data));
+        toast.success("Blog Updated Successfullly!")
+        setTimeout(() => {
+          navigate("/admin/blog-list");
+          dispatch(resetState());
+        }, 300);
+      } else {
+        toast.success("Blog Added Successfullly!")
+        dispatch(createBlog(values));
+        formik.resetForm();
+        setTimeout(() => {
+          navigate("/admin/blog-list");
+          dispatch(resetState());
+        }, 300);
+      }
     },
   });
   return (
     <div>
       <div className="">
-      <form onSubmit={formik.handleSubmit} className="add-blog-form">
+        <form onSubmit={formik.handleSubmit} className="add-blog-form">
           <CustomInput
             type="text"
             id="title"

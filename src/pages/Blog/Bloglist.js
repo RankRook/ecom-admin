@@ -45,7 +45,7 @@ const Bloglist = () => {
         <>
           <Link
             className="ms-3 fs-3 text-danger"
-            to={`/admin/brand/${blogstate[i]._id}`}
+            to={`/admin/blog/${blogstate[i]._id}`}
           >
             <BiEdit />
           </Link>

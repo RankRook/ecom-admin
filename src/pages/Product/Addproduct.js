@@ -7,15 +7,20 @@ import { toast } from "react-toastify";
 import ReactQuill from "react-quill";
 import * as yup from "yup";
 import Dropzone from "react-dropzone";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { getBrands } from "../../features/brand/brandSlice";
 import { getCategorys } from "../../features/category/categorySlice";
-import { createProduct } from "../../features/product/productSlice";
+import {
+  createProduct,
+  getAProduct,
+  getProducts,
+  resetState,
+  updateProduct,
+} from "../../features/product/productSlice";
 import { deleteImg, uploadImg } from "../../features/upload/uploadSlice";
 import "./addproduct.css";
-
 
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
@@ -23,13 +28,46 @@ let schema = yup.object().shape({
   price: yup.number().required("Price is Required"),
   brand: yup.string().required("Brand is Required"),
   category: yup.string().required("Category is Required"),
+  tags: yup.string().required("Tag is Required"),
   quantity: yup.number().required("Quantity is Required"),
 });
 
 const Addproduct = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const getProductId = location.pathname.split("/")[3];
+
+  const brandState = useSelector((state) => state.brand.brands);
+  const categoryState = useSelector((state) => state.category.categorys);
+  const imgState = useSelector((state) => state.upload.images);
+  const productState = useSelector((state) => state.product);
+  const {
+    createdProduct,
+    productName,
+    productDesc,
+    productCategory,
+    productPrice,
+    ProductTag,
+    productBrand,
+    productImages,
+    productQuantity,
+    updatedProduct,
+  } = productState;
   const [images, setImages] = useState([]);
+  useEffect(() => {
+    if (getProductId !== undefined) {
+      dispatch(getAProduct(getProductId));
+      img.push(productImages);
+    } else {
+      dispatch(resetState());
+    }
+  }, [getProductId]);
+
+  useEffect(() => {
+    dispatch(getBrands());
+    dispatch(getCategorys());
+  }, []);
 
   const handleImageDeletion = () => {
     // Gọi action để xóa hình ảnh từ `imgState`
@@ -40,61 +78,55 @@ const Addproduct = () => {
     setImages([]);
   };
 
-  useEffect(() => {
-    dispatch(getBrands());
-    dispatch(getCategorys());
-  }, []);
-
-  const brandState = useSelector((state) => state.brand.brands);
-  const categoryState = useSelector((state) => state.category.categorys);
-  const imgState = useSelector((state) => state.upload.images);
-
-  // const newProduct = useSelector((state) => state.product);
-  // const { isSuccess, isError, isLoading, createProducts } = newProduct;
-
-  // useEffect(() => {
-  //   if (isSuccess && createProducts ) {
-  //     toast.success("Product Added Successfully!");
-  //   }
-  //   if (isError) {
-  //     toast.error("Something Went Wrong");
-  //   }
-  // }, [isSuccess, isError, isLoading, createProducts]);
 
   const img = [];
+
   imgState.forEach((i) => {
     img.push({
       public_id: i.public_id,
+      asset_id: i.asset_id,
       url: i.url,
     });
   });
 
+
   useEffect(() => {
     formik.values.images = img;
-  }, [img]);
+  }, [productImages]);
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      title: "",
-      description: "",
-      price: "",
-      brand: "",
-      category: "",
-      quantity: "",
-      images: "[]",
+      title: productName || "",
+      description: productDesc || "",
+      price: productPrice || "",
+      brand: productBrand || "",
+      category: productCategory || "",
+      quantity: productQuantity || "",
+      tags: ProductTag || "",
+      images: "",
     },
     validationSchema: schema,
 
     onSubmit: (values) => {
-      toast.success("Product Added Successfully!")
-      dispatch(createProduct(values));
-      handleImageDeletion(); // Xóa hình ảnh sau khi submit
-      formik.resetForm();
-      setTimeout(() => {
-        navigate("/admin/product-list");
-      }, 1000);
+      if (getProductId !== undefined) {
+        const data = { id: getProductId, productData: values };
+        dispatch(updateProduct(data));
+        toast.success("Product Updated Successfullly!");
+        setTimeout(() => {
+          navigate("/admin/product-list");
+          dispatch(resetState());
+        }, 300);
+      } else {
+        toast.success("Product Added Successfully!");
+        dispatch(createProduct(values));
+        formik.resetForm();
+        setTimeout(() => {
+          dispatch(handleImageDeletion()); // Xóa hình ảnh sau khi submit
+          navigate("/admin/product-list");
+        }, 1000);
+      }
     },
-    
   });
 
   return (
@@ -165,6 +197,24 @@ const Addproduct = () => {
             {formik.touched.brand && formik.errors.brand && (
               <div className="error">{formik.errors.brand}</div>
             )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="category">Tag</label>
+            <select
+              name="tags"
+              onChange={formik.handleChange("tags")}
+              onBlur={formik.handleBlur("tags")}
+              value={formik.values.tags}
+              className="form-select"
+              id=""
+            >
+              <option value="" disabled>
+                Select Tag
+              </option>
+              <option value="featured">Featured</option>
+              <option value="popular">Popular</option>
+              <option value="special">Special</option>
+            </select>
           </div>
           <div className="form-group">
             <label htmlFor="category">Category</label>

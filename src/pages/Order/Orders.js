@@ -3,9 +3,10 @@
 import React, { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
-import { Space, Table, Typography } from 'antd';
+import { Table } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { getOrders } from "../../features/auth/authSlice";
+import { Link } from "react-router-dom";
 
 const columns = [
   {
@@ -49,29 +50,13 @@ const Order = () => {
     data1.push({
       key: i + 1,
       name: orderState[i].orderby.firstname,
-      product: orderState[i].products.map((i)=>{
-        return (
-          <>
-           <ul>
-            <li>{i.product.title}</li>
-           </ul>
-          </>
-        );
-      }),
-      amount: orderState[i].paymentIntent.amount,
-      date: new Date(orderState[i].createdAt).toDateString(),
-      action: (
-        <>
-          <button className="ms-2 fs-3 text-danger bg-transparent border-0">
-            <BiEdit />
-          </button>
-          <button
-            className="ms-2 fs-3 text-danger bg-transparent border-0"      
-          >
-            <AiFillDelete />
-          </button>
-        </>
+      product: (
+        <Link to={`/admin/order/${orderState[i].orderby._id}`}>
+          View Orders
+        </Link>
       ),
+      amount: orderState[i].paymentIntent.amount,
+      date: new Date(orderState[i].createdAt).toLocaleString(),
     });
   }
   return (

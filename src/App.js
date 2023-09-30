@@ -20,6 +20,8 @@ import Addproduct from './pages/Product/Addproduct';
 import Enquiries from './pages/Enquiry/Enquiries';
 import Couponlist from './pages/Coupon/Couponlist';
 import Addcoupon from './pages/Coupon/Addcoupon';
+import ViewEnq from './pages/Enquiry/viewEnq';
+import ViewOrder from './pages/Order/viewOrder';
 
 
 function App() {
@@ -31,7 +33,12 @@ function App() {
         <Route path="/forgot-password" element={<Forgotpassword />} />
         <Route path="/admin" element={<MainLayout />} >
           <Route index element={<Dashboard />} />
+          <Route path="product" element={<Addproduct />} />
+          <Route path="product/:id" element={<Addproduct />} />
+          <Route path="enquiries" element={<Enquiries />} />
+          <Route path="enquiries/:id" element={<ViewEnq />} />
           <Route path="blog" element={<Addblog />} />
+          <Route path="blog/:id" element={<Addblog />} />
           <Route path="blog-category" element={<Addblogcat />} />
           <Route path="blog-category/:id" element={<Addblogcat />} />
           <Route path="blog-list" element={<Bloglist />} />
@@ -40,6 +47,7 @@ function App() {
           <Route path="coupon" element={<Addcoupon />} />
           <Route path="coupon/:id" element={<Addcoupon />} />
           <Route path="order" element={<Orders />} />
+          <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
           <Route path="category" element={<Addcat />} />
           <Route path="category/:id" element={<Addcat />} />
@@ -48,8 +56,6 @@ function App() {
           <Route path="brand/:id" element={<Addbrand />} />
           <Route path="brand-list" element={<Brandlist />} />
           <Route path="product-list" element={<Productlist />} />
-          <Route path="product" element={<Addproduct />} />
-          <Route path="enquiries" element={<Enquiries />} />
         </Route>
       </Routes>
     </Router>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
-import { Segmented, Space, Switch, Table, Typography } from "antd";
+import {  Table,  } from "antd";
 import {
   deleteCategory,
   getCategorys,
