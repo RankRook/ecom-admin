@@ -54,7 +54,9 @@ const Addproduct = () => {
     productQuantity,
     updatedProduct,
   } = productState;
+
   const [images, setImages] = useState([]);
+
   useEffect(() => {
     if (getProductId !== undefined) {
       dispatch(getAProduct(getProductId));
@@ -84,7 +86,6 @@ const Addproduct = () => {
   imgState.forEach((i) => {
     img.push({
       public_id: i.public_id,
-      asset_id: i.asset_id,
       url: i.url,
     });
   });
@@ -92,7 +93,7 @@ const Addproduct = () => {
 
   useEffect(() => {
     formik.values.images = img;
-  }, [productImages]);
+  }, [img]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -124,6 +125,7 @@ const Addproduct = () => {
         setTimeout(() => {
           dispatch(handleImageDeletion()); // Xóa hình ảnh sau khi submit
           navigate("/admin/product-list");
+          dispatch(resetState());
         }, 1000);
       }
     },
