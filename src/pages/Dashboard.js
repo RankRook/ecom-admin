@@ -1,7 +1,10 @@
-import React from "react";
+/* eslint-disable no-unused-vars */
+import React, { useEffect } from "react";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
-import {BsArrowDownRight} from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { BsArrowDownRight } from "react-icons/bs";
+import { getMonthlyData } from "../features/auth/authSlice";
 const columns = [
   {
     title: "SNo",
@@ -31,6 +34,11 @@ for (let i = 0; i < 46; i++) {
 }
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const selector = useSelector((state) => state.auth.monthlyData);
+  useEffect(() => {
+    dispatch(getMonthlyData());
+  });
   const data = [
     {
       type: "Jan",
@@ -117,7 +125,10 @@ const Dashboard = () => {
             <h4 className="mb-0 sub-title">$1000</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
-            <h6><BsArrowDownRight/>32%</h6>
+            <h6>
+              <BsArrowDownRight />
+              32%
+            </h6>
             <p className="mb-0 desc">Compare to Auguest 2023</p>
           </div>
         </div>
@@ -127,7 +138,10 @@ const Dashboard = () => {
             <h4 className="mb-0 sub-title">$1000</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
-            <h6 className="red"><BsArrowDownRight/>32%</h6>
+            <h6 className="red">
+              <BsArrowDownRight />
+              32%
+            </h6>
             <p className="mb-0 desc">Compare to Auguest 2023</p>
           </div>
         </div>
@@ -137,7 +151,10 @@ const Dashboard = () => {
             <h4 className="mb-0 sub-title">$1000</h4>
           </div>
           <div className="d-flex flex-column align-items-end">
-            <h6 className="green"><BsArrowDownRight/>32%</h6>
+            <h6 className="green">
+              <BsArrowDownRight />
+              32%
+            </h6>
             <p className="mb-0 desc">Compare to Auguest 2023</p>
           </div>
         </div>

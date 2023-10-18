@@ -74,7 +74,7 @@ const Addcoupon = () => {
         setTimeout(() => {
           toast.success("Coupon Added Successfully!");
           navigate("/admin/coupon-list");
-          dispatch(resetState());
+          // dispatch(resetState());
         }, 300);
       }
     },
