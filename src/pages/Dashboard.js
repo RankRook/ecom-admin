@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Column } from "@ant-design/plots";
 import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -35,10 +36,35 @@ for (let i = 0; i < 46; i++) {
 
 const Dashboard = () => {
   const dispatch = useDispatch();
-  const selector = useSelector((state) => state.auth.monthlyData);
+  const monthlyDataState = useSelector((state) => state.auth.monthlyData);
+  const [dataMonthly, setDataMonthly] = useState([])
   useEffect(() => {
     dispatch(getMonthlyData());
-  });
+  },[]);
+
+  useEffect(()=>{
+    let monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    let data =[]
+    for (let i = 0; i < monthlyDataState?.length; i++){
+      const element = monthlyDataState[i];
+      data.push({type: monthNames[element?._id?.month], sales:element?.count})
+    }
+    setDataMonthly(data)
+  },[monthlyDataState])
+
   const data = [
     {
       type: "Jan",
@@ -90,9 +116,9 @@ const Dashboard = () => {
     },
   ];
   const config = {
-    data,
+    data: dataMonthly,
     xField: "type",
-    yField: "sales",
+    yField: "Income",
     label: {
       position: "middle",
       style: {
