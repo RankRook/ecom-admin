@@ -1,9 +1,11 @@
+
 import axios from "axios";
 import { base_url } from "../../utils/base_url";
 
 const getTokenFromLocalStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
+
 
 export const config = {
   headers: {
@@ -14,7 +16,6 @@ export const config = {
   },
 };
 
-
 const login = async (userData) => {
   const response = await axios.post(`${base_url}user/admin-login`, userData);
   if (response.data) {
@@ -23,32 +24,42 @@ const login = async (userData) => {
   return response.data;
 };
 
-const getOrders = async () => {
-  const response = await axios.get(`${base_url}user/getallorders`, config);
+
+const getOrders = async (data) => {
+  const response = await axios.get(`${base_url}user/getallorders`, data);
   return response.data;
 };
 
 const getOrder = async (id) => {
-  const response = await axios.post(
-    `${base_url}user/getorderbyuser/${id}`,
-    "",
-    config
-  );
-
+  const response = await axios.get(`${base_url}user/getaorder/${id}`, config);
   return response.data;
 };
 
-const getMonthlyOrders = async()=>{
+const updateOrder = async (data) => {
+  const response = await axios.put(`${base_url}user/updateOrder/${data.id}`, {status:data.status}, config);
+  return response.data;
+};
+
+const getMonthlyOrders = async (data) => {
   const response = await axios.get(
     `${base_url}user/getMonthWiseOrderIncome`,
-    config
-  );  
+    data
+  );
   return response.data;
-}
+};
+const getYearlyOrders = async (data) => {
+  const response = await axios.get(
+    `${base_url}user/getYearlyTotalOrders`,
+    data
+  );
+  return response.data;
+};
 const authService = {
   login,
   getOrders,
   getOrder,
-  getMonthlyOrders
+  updateOrder,
+  getMonthlyOrders,
+  getYearlyOrders,
 };
 export default authService;
