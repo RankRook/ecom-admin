@@ -26,17 +26,39 @@ export const login = createAsyncThunk(
   }
 );
 
-export const getOrders = createAsyncThunk(
-  "order/get-orders",
-  async (thunkAPI) => {
+export const getMonthlyData = createAsyncThunk(
+  "auth/monthly-data",
+  async (data, thunkAPI) => {
     try {
-      return await authService.getOrders();
+      return await authService.getMonthlyOrders(data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
-export const getOrderByUser = createAsyncThunk(
+
+export const getYearlyData = createAsyncThunk(
+  "auth/yearly-data",
+  async ( data, thunkAPI) => {
+    try {
+      return await authService.getYearlyOrders(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getOrders = createAsyncThunk(
+  "order/get-orders",
+  async (data,thunkAPI) => {
+    try {
+      return await authService.getOrders(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+export const getOrder = createAsyncThunk(
   "order/get-order",
   async (id, thunkAPI) => {
     try {
@@ -47,6 +69,16 @@ export const getOrderByUser = createAsyncThunk(
   }
 );
 
+export const updateOrderStatus = createAsyncThunk(
+  "order/update-order",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.updateOrder(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -61,12 +93,12 @@ export const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.user = action.payload
+        
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
-        state.message = action.error
       })
       .addCase(getOrders.pending, (state) => {
         state.isLoading = true;
@@ -84,22 +116,68 @@ export const authSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-      .addCase(getOrderByUser.pending, (state) => {
+      .addCase(getOrder.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getOrderByUser.fulfilled, (state, action) => {
+      .addCase(getOrder.fulfilled, (state, action) => {
         state.isError = false;
         state.isLoading = false;
         state.isSuccess = true;
-        state.orderbyuser = action.payload;
+        state.singleorder = action.payload;
         state.message = "success";
       })
-      .addCase(getOrderByUser.rejected, (state, action) => {
+      .addCase(getOrder.rejected, (state, action) => {
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
         state.isLoading = false;
-      });
+      }).addCase(getMonthlyData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getMonthlyData.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.monthlyData = action.payload;
+      })
+      .addCase(getMonthlyData.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(getYearlyData.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getYearlyData.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.yearlyData = action.payload;
+      })
+      .addCase(getYearlyData.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      }).addCase(updateOrderStatus.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateOrderStatus.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.updateOrder = action.payload;
+        state.message = "success";
+      })
+      .addCase(updateOrderStatus.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+
+      
   },
 });
 

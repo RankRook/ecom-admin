@@ -67,6 +67,7 @@ export const deleteBlog = createAsyncThunk(
 )
 
 export const resetState = createAction("Reset_all");
+export const resetImgBlogState = createAction("Reset_img_product_state");
 
 export const blogSlice = createSlice({
   name: "blogs",
@@ -149,7 +150,10 @@ export const blogSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(resetState, () => initialState);
+      .addCase(resetState, () => initialState)
+      .addCase(resetImgBlogState, (state) => {
+        state.blogImages = []; // Reset imgProductState to an empty array
+      });
   },
 });
 

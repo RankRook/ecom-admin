@@ -2,10 +2,14 @@
 import React, { useEffect } from "react";
 import { BiEdit } from "react-icons/bi";
 import { AiFillDelete } from "react-icons/ai";
-import { Segmented, Space, Switch, Table, Typography } from 'antd';
-import { getBlogs} from "../../features/blog/blogSlice";
+import { Segmented, Space, Switch, Table, Typography } from "antd";
+import { deleteBlog, getBlogs } from "../../features/blog/blogSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Link} from "react-router-dom"
+import { Link } from "react-router-dom";
+import CustomModal from "../../components/CustomModal";
+import { resetState } from "../../features/blog/blogSlice";
+import { useState } from "react";
+
 const columns = [
   {
     title: "SNo",
@@ -21,19 +25,29 @@ const columns = [
     dataIndex: "category",
     sorter: (a, b) => a.category.length - b.category.length,
   },
-  
+
   {
-    title: 'Action',
-    width: 150, 
+    title: "Action",
+    width: 150,
     dataIndex: "action",
   },
 ];
 
 const Bloglist = () => {
+  const [open, setOpen] = useState(false);
+  const [blogId, setblogId] = useState("");
+  const showModal = (e) => {
+    setOpen(true);
+    setblogId(e);
+  };
+  const hideModal = () => {
+    setOpen(false);
+  };
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(resetState());
     dispatch(getBlogs());
-  }, [dispatch]);
+  }, []);
   const blogstate = useSelector((state) => state.blog.blogs);
   const data1 = [];
   for (let i = 0; i < blogstate.length; i++) {
@@ -50,7 +64,8 @@ const Bloglist = () => {
             <BiEdit />
           </Link>
           <button
-            className="ms-2 fs-3 text-danger bg-transparent border-0"      
+            className="ms-3 fs-3 text-danger bg-transparent border-0"
+            onClick={() => showModal(blogstate[i]._id)}
           >
             <AiFillDelete />
           </button>
@@ -58,10 +73,26 @@ const Bloglist = () => {
       ),
     });
   }
+
+  const deleteABlog = (e) => {
+    dispatch(deleteBlog(e));
+    setOpen(false);
+    setTimeout(() => {
+      dispatch(getBlogs());
+    }, 100);
+  };
   return (
     <div>
       <h3 className="mb-4 title">blog List</h3>
       <Table columns={columns} dataSource={data1} />
+      <CustomModal
+        hideModal={hideModal}
+        open={open}
+        performAction={() => {
+          deleteABlog(blogId);
+        }}
+        title="Are you sure you want to delete this blog?"
+      />
     </div>
   );
 };

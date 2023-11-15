@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Table } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { getOrderByUser } from "../../features/auth/authSlice";
+import { getOrder } from "../../features/auth/authSlice";
 const columns = [
   {
     title: "SNo",
@@ -25,34 +25,23 @@ const columns = [
     title: "Amount",
     dataIndex: "amount",
   },
-  {
-    title: "Date",
-    dataIndex: "date",
-  },
-
-  {
-    title: "Action",
-    dataIndex: "action",
-  },
 ];
 const ViewOrder = () => {
     const location = useLocation();
-    const userId = location.pathname.split("/")[3];
+    const orderId = location.pathname.split("/")[3];
     const dispatch = useDispatch();
     useEffect(() => {
-      dispatch(getOrderByUser(userId));
+      dispatch(getOrder(orderId));
     }, []);
-    const orderState = useSelector((state) => state.auth.orderbyuser[0]?.product);
-    console.log(orderState);
+    const orderState = useSelector((state) => state?.auth?.singleorder);
     const data1 = [];
-    for (let i = 0; i < orderState?.length; i++) {
+    for (let i = 0; i < orderState?.orderItems?.length; i++) {
       data1.push({
         key: i + 1,
-        name: orderState[i].product.title,
-        brand: orderState[i].product.brand,
-        count: orderState[i].count,
-        amount: orderState[i].product.price,
-        date: orderState[i].product.createdAt,
+        name: orderState?.orderItems[i]?.product?.title,
+        brand: orderState?.orderItems[i]?.product?.brand,
+        count: orderState?.orderItems[i]?.quantity,
+        amount: orderState?.orderItems[i]?.price,
       });
     }
     return (

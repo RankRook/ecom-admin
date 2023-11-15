@@ -11,6 +11,7 @@ import { FaClipboardList } from "react-icons/fa";
 import { TbBrandBlogger, TbBrandBootstrap, TbCategory } from "react-icons/tb";
 import {
   AiOutlineDashboard,
+  AiOutlineLogout,
   AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
@@ -40,6 +41,8 @@ const MainLayout = () => {
           defaultSelectedKeys={[""]}
           onClick={({ key }) => {
             if (key === "signout") {
+              localStorage.clear()
+              window.location.reload()
             } else {
               navigate(key);
             }
@@ -145,6 +148,10 @@ const MainLayout = () => {
               key: "enquiries",
               icon: <FaClipboardList className="fs-4" />,
               label: "Enquiries",
+            },{
+              key: "signout",
+              icon: <AiOutlineLogout className="fs-4" />,
+              label: "Sign out",
             },
           ]}
         />
@@ -170,14 +177,6 @@ const MainLayout = () => {
           <div className="d-flex gap-3 align-items-center">
             <div></div>
             <div className="d-flex gap-3 align-items-center dropdown">
-              <div>
-                <img
-                  src="https://3.bp.blogspot.com/-CD4R_mKFYHQ/Wg_tLdee9XI/AAAAAAAAA20/7kmFmSTx4HURTxzmpry-f0VFuvysSGX9gCEwYBhgL/s1600/3.5.1.jpg"
-                  height={32}
-                  width={32}
-                  alt=""
-                />
-              </div>
               <div
                 role="button"
                 id="dropdownMenuLink"

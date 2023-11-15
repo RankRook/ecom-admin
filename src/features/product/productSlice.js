@@ -60,9 +60,12 @@ export const deleteProduct = createAsyncThunk(
 
 export const resetState = createAction("Reset_all");
 
+export const resetImgProductState = createAction("Reset_img_product_state");
+
 
 const initialState = {
   products: [],
+  productImages: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -115,7 +118,8 @@ export const productSlice = createSlice({
         state.productDesc = action.payload.description;
         state.productPrice = action.payload.price;
         state.productCategory = action.payload.category;
-        state.productTag = action.payload.tag;
+        state.productBrand = action.payload.brand;
+        state.productTag = action.payload.tags;
         state.productQuantity = action.payload.quantity;
         state.productImages = action.payload.images;
       })
@@ -155,8 +159,12 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(resetState, () => initialState);
+      .addCase(resetState, () => initialState)
+      .addCase(resetImgProductState, (state) => {
+        state.productImages = []; // Reset imgProductState to an empty array
+      });
   },
+  
 });
 
 export default productSlice.reducer;
