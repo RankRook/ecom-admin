@@ -28,7 +28,7 @@ import { resetImgProductState } from "../../features/product/productSlice";
 let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
   description: yup.string().required("Description is Required"),
-  category: yup.string().required("Category is Required"),
+  bcategories: yup.string().required("Category is Required"),
 });
 const Addblog = () => {
   const dispatch = useDispatch();
@@ -78,7 +78,7 @@ const Addblog = () => {
     initialValues: {
       title: blogName || "",
       description: blogDesc || "",
-      category: blogCategory || "",
+      bcategories: blogCategory || "",
       images: imgState || "",
     },
     validationSchema: schema,
@@ -119,12 +119,12 @@ const Addblog = () => {
             onBlr={formik.handleBlur("title")}
             val={formik.values.title}
           />
-          <label htmlFor="category">Category</label>
+          <label htmlFor="bcategories">Category</label>
           <select
-            name="category"
-            onChange={formik.handleChange("category")}
-            onBlur={formik.handleBlur("category")}
-            value={formik.values.category}
+            name="bcategories"
+            onChange={formik.handleChange("bcategories")}
+            onBlur={formik.handleBlur("bcategories")}
+            value={formik.values.bcategories}
             className="form-control py-3  mt-3"
             id=""
           >

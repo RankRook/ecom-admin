@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 
-const getUserfromLocalStorage = localStorage.getItem('user')
-  ? JSON.parse(localStorage.getItem('user'))
+const getUserfromLocalStorage = localStorage.getItem("user")
+  ? JSON.parse(localStorage.getItem("user"))
   : null;
-
 
 const initialState = {
   user: getUserfromLocalStorage,
-  orders:[],
+  orders: [],
   isError: false,
   isLoading: false,
   isSuccess: false,
@@ -39,7 +38,7 @@ export const getMonthlyData = createAsyncThunk(
 
 export const getYearlyData = createAsyncThunk(
   "auth/yearly-data",
-  async ( data, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
       return await authService.getYearlyOrders(data);
     } catch (error) {
@@ -50,7 +49,7 @@ export const getYearlyData = createAsyncThunk(
 
 export const getOrders = createAsyncThunk(
   "order/get-orders",
-  async (data,thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
       return await authService.getOrders(data);
     } catch (error) {
@@ -80,6 +79,50 @@ export const updateOrderStatus = createAsyncThunk(
   }
 );
 
+export const updateUserRole = createAsyncThunk(
+  "user/update-user",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.updateRole(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const updateUserProf = createAsyncThunk(
+  "user/update",
+  async (data, thunkAPI) => {
+    try {
+      return await authService.updateUser(data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getAUser = createAsyncThunk(
+  "user/user-profile",
+  async (id, thunkAPI) => {
+    try {
+      return await authService.getUser(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const deleteAUser = createAsyncThunk(
+  "user/delete-user",
+  async (id, thunkAPI) => {
+    try {
+      return await authService.deleteUser(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
@@ -92,8 +135,7 @@ export const authSlice = createSlice({
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload
-        
+        state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -131,7 +173,8 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         state.isLoading = false;
-      }).addCase(getMonthlyData.pending, (state) => {
+      })
+      .addCase(getMonthlyData.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getMonthlyData.fulfilled, (state, action) => {
@@ -160,7 +203,8 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         state.isLoading = false;
-      }).addCase(updateOrderStatus.pending, (state) => {
+      })
+      .addCase(updateOrderStatus.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(updateOrderStatus.fulfilled, (state, action) => {
@@ -176,8 +220,68 @@ export const authSlice = createSlice({
         state.message = action.error;
         state.isLoading = false;
       })
-
-      
+      .addCase(updateUserRole.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserRole.fulfilled, (state, action) => {
+        state.isError = false;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.updateRole = action.payload;
+        state.message = "success";
+      })
+      .addCase(updateUserRole.rejected, (state, action) => {
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        state.isLoading = false;
+      })
+      .addCase(deleteAUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteAUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.deletedUser = action.payload;
+      })
+      .addCase(deleteAUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
+      .addCase(updateUserProf.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserProf.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.updatedUser = action.payload;
+        state.user = action.payload;
+      })
+      .addCase(updateUserProf.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+      }).addCase(getAUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.info = action.payload;
+      })
+      .addCase(getAUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.message = action.error;
+      })
+      ;
   },
 });
 

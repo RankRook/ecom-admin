@@ -18,6 +18,7 @@ import {
 import { Link } from "react-router-dom";
 import { Layout, Menu, Button, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -25,6 +26,9 @@ const MainLayout = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
+  const dispatch = useDispatch();
+  const userState = useSelector((state) => state?.auth?.user);
   const navigate = useNavigate();
   return (
     <Layout>
@@ -57,6 +61,11 @@ const MainLayout = () => {
               key: "customers",
               icon: <AiOutlineUser className="fs-4" />,
               label: "Customers",
+            },
+            {
+              key: "users",
+              icon: <AiOutlineUser className="fs-4" />,
+              label: "User",
             },
             {
               key: "catalog",
@@ -183,29 +192,10 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Hien</h5>
-                <p className="mb-0">hdhien2002@gmail.com</p>
+                <h5 className="mb-0">{userState?.lastname}</h5>
+                <p className="mb-0">{userState?.email}</p>
               </div>
-              <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
-                  >
-                    View Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item py-1 mb-1"
-                    style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
-                  >
-                    Logout
-                  </Link>
-                </li>
-              </div>
+
             </div>
           </div>
         </Header>

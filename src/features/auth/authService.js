@@ -1,11 +1,9 @@
-
 import axios from "axios";
 import { base_url } from "../../utils/base_url";
 
 const getTokenFromLocalStorage = localStorage.getItem("user")
   ? JSON.parse(localStorage.getItem("user"))
   : null;
-
 
 export const config = {
   headers: {
@@ -16,6 +14,13 @@ export const config = {
   },
 };
 
+const getUser = async(id)=>{
+  const response = await axios.get(`${base_url}user/user-info/${id}`, config);
+  if (response.data) {
+    return response.data;
+  }
+}
+
 const login = async (userData) => {
   const response = await axios.post(`${base_url}user/admin-login`, userData);
   if (response.data) {
@@ -23,7 +28,6 @@ const login = async (userData) => {
   }
   return response.data;
 };
-
 
 const getOrders = async (data) => {
   const response = await axios.get(`${base_url}user/getallorders`, data);
@@ -36,7 +40,20 @@ const getOrder = async (id) => {
 };
 
 const updateOrder = async (data) => {
-  const response = await axios.put(`${base_url}user/updateOrder/${data.id}`, {status:data.status}, config);
+  const response = await axios.put(
+    `${base_url}user/updateOrder/${data.id}`,
+    { status: data.status },
+    config
+  );
+  return response.data;
+};
+
+const updateRole = async (data) => {
+  const response = await axios.put(
+    `${base_url}user/updateRole/${data.id}`,
+    { status: data.status },
+    config
+  );
   return response.data;
 };
 
@@ -54,6 +71,21 @@ const getYearlyOrders = async (data) => {
   );
   return response.data;
 };
+
+const deleteUser = async (id) => {
+  const response = await axios.delete(
+    `${base_url}user/delete-user/${id}`,
+    config
+  );
+  return response.data;
+};
+const updateUser = async (data) => {
+  const response = await axios.put(`${base_url}user/edit-user`, data, config);
+  if (response.data) {
+    return response.data;
+  }
+};
+
 const authService = {
   login,
   getOrders,
@@ -61,5 +93,9 @@ const authService = {
   updateOrder,
   getMonthlyOrders,
   getYearlyOrders,
+  updateRole,
+  deleteUser,
+  updateUser,
+  getUser
 };
 export default authService;

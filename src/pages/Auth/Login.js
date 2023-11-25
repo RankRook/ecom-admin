@@ -2,11 +2,10 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect } from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
 import CustomInput from "../../components/CustomInput";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { useDispatch, useSelector,  } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 const Login = () => {
@@ -35,34 +34,29 @@ const Login = () => {
   useEffect(() => {
     if (!user == null || isSuccess) {
       navigate("admin");
-    } 
+    }
   }, [user, isLoading, isError, isSuccess]);
   return (
     <>
       <div className="login animated bounceInDown">
         <div className="container">
-          <form
-            name="form1"
-            className="box"
-            // onSubmit="return checkStuff()"
-            onSubmit={formik.handleSubmit}
-          >
+          <form name="form1" className="box" onSubmit={formik.handleSubmit}>
             <h4>
               Admin<span>Dashboard</span>
             </h4>
             <h5>Sign in to your account.</h5>
             <div className="error text-center">
-              {message.message === "Rejected"?"You are not an Admin" : ""}
+              {message.message === "Rejected" ? "You are not an Admin" : ""}
             </div>
             <CustomInput
               classname="input"
               type="text"
-              name="email"
               label="Email"
               id="email"
               val={formik.values.email}
               onCh={formik.handleChange("email")}
             />
+
             {formik.touched.email && formik.errors.email ? (
               <div style={{ color: "red" }}>{formik.errors.email}</div>
             ) : null}
@@ -70,7 +64,7 @@ const Login = () => {
               classname="input"
               type="password"
               name="password"
-              label="Passsword"
+              label="Password"
               id="password"
               val={formik.values.password}
               onCh={formik.handleChange("password")}
@@ -78,11 +72,6 @@ const Login = () => {
             {formik.touched.password && formik.errors.password ? (
               <div style={{ color: "red" }}>{formik.errors.password}</div>
             ) : null}
-            <Link to="forgot-password">
-              <a href="/" className="forgetpass">
-                Forget Password?
-              </a>
-            </Link>
             <button type="submit" value="Login" className="btn1">
               Login
             </button>

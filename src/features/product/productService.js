@@ -23,11 +23,12 @@ const getAProduct  = async (id) => {
       {
         title: product.productData.title,
         description: product.productData.description,
-        category: product.productData.category,
+        bcategories: product.productData.category,
+        brands: product.productData.brands,
         images: product.productData.images,
         price : product.productData.price,
         tag : product.productData.tag,
-        Quantity : product.productData.quantity,
+        quantity : product.productData.quantity,
       },
       config
     );
