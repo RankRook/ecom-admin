@@ -28,8 +28,8 @@ let schema = yup.object().shape({
   title: yup.string().required("Title is Required"),
   description: yup.string().required("Description is Required"),
   price: yup.number().required("Price is Required"),
-  brand: yup.string().required("Brand is Required"),
-  category: yup.string().required("Category is Required"),
+  brands: yup.string().required("Brand is Required"),
+  pcategories: yup.string().required("Category is Required"),
   tags: yup.string().required("Tag is Required"),
   quantity: yup.number().required("Quantity is Required"),
 });
@@ -45,6 +45,8 @@ const Addproduct = () => {
   const imgState = useSelector((state) => state.upload.images);
   const [images, setImages] = useState([]);
 
+
+
   const productState = useSelector((state) => state.product);
   const {
     productName,
@@ -57,7 +59,8 @@ const Addproduct = () => {
     productQuantity,
   } = productState;
 
-
+  console.log(productBrand)
+  console.log(productQuantity)
   useEffect(() => {
     dispatch(getBrands());
     dispatch(getCategorys());
@@ -89,9 +92,9 @@ const Addproduct = () => {
     initialValues: {
       title: productName || "",
       description: productDesc || "",
-      price: productPrice || "",
-      brand: productBrand || "",
-      category: productCategory || "",
+      price: productPrice ||  "",
+      brands: productBrand || "",
+      pcategories: productCategory || "",
       quantity: productQuantity || "",
       tags: productTag || "",
       images: imgState || "",
@@ -171,13 +174,13 @@ const Addproduct = () => {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="brand">Brand</label>
+            <label htmlFor="brands">Brand</label>
             <select
-              id="brand"
-              name="brand"
+              id="brands"
+              name="brands"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.brand}
+              value={formik.values.brands}
               className="form-select"
             >
               <option value="">Select Brand</option>
@@ -189,8 +192,8 @@ const Addproduct = () => {
                 );
               })}
             </select>
-            {formik.touched.brand && formik.errors.brand && (
-              <div className="error">{formik.errors.brand}</div>
+            {formik.touched.brands && formik.errors.brands && (
+              <div className="error">{formik.errors.brands}</div>
             )}
           </div>
           <div className="form-group">
@@ -212,13 +215,13 @@ const Addproduct = () => {
             </select>
           </div>
           <div className="form-group">
-            <label htmlFor="category">Category</label>
+            <label htmlFor="pcategories">Category</label>
             <select
-              id="category"
-              name="category"
+              id="pcategories"
+              name="pcategories"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              value={formik.values.category}
+              value={formik.values.pcategories}
               className="form-select"
             >
               <option value="">Select Category</option>
@@ -230,19 +233,18 @@ const Addproduct = () => {
                 );
               })}
             </select>
-            {formik.touched.category && formik.errors.category && (
-              <div className="error">{formik.errors.category}</div>
+            {formik.touched.pcategories && formik.errors.pcategories && (
+              <div className="error">{formik.errors.pcategories}</div>
             )}
           </div>
           <div className="form-group">
             <label htmlFor="quantity">Product Quantity</label>
             <CustomInput
               type="number"
-              id="quantity"
               name="quantity"
               onCh={formik.handleChange("quantity")}
               onBlr={formik.handleBlur("quantity")}
-              val={formik.values.quantity}
+              val={formik.values.quantity.toString()}
             />
             <div className="error">
               {formik.touched.quantity && formik.errors.quantity}

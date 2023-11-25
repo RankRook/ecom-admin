@@ -7,6 +7,7 @@ import Bloglist from './pages/Blog/Bloglist';
 import Blogcatlist from './pages/Bcategory/Blogcatlist';
 import Orders from './pages/Order/Orders';
 import Customers from './pages/Customer/Customers';
+import User from './pages/User/User';
 import Categorylist from './pages/Category/Categorylist';
 import Brandlist from './pages/Brand/Brandlist';
 import Productlist from './pages/Product/Productlist';
@@ -22,6 +23,7 @@ import ViewEnq from './pages/Enquiry/viewEnq';
 import ViewOrder from './pages/Order/viewOrder';
 import { OpenRoute } from './routing/OpenRoute';
 import {PrivateRoute} from './routing/PrivateRoute'
+import EditUser from './pages/User/EditUser';
 // import OpenRoute from './routing/OpenRoute'
 
 
@@ -48,6 +50,8 @@ function App() {
           <Route path="order" element={<Orders />} />
           <Route path="order/:id" element={<ViewOrder />} />
           <Route path="customers" element={<Customers />} />
+          <Route path="users" element={<User />} />
+          <Route path="user/:id" element={<EditUser />} />
           <Route path="category" element={<Addcat />} />
           <Route path="category/:id" element={<Addcat />} />
           <Route path="category-list" element={<Categorylist />} />

@@ -174,7 +174,7 @@ const Dashboard = () => {
       <div className="d-flex justify-content-between align-items-center gap-3">
         <div className="d-flex justify-content-between align-items-end flex-grow-1 bg-white p-3 rounded-3">
           <div>
-            <p className="mb-0 desc">Total Income</p>
+            <p className="mb-0 desc">Total revenue</p>
             <h4 className="mb-0 sub-title">
               $ {yearlyDataState && yearlyDataState[0]?.amount}
             </h4>
