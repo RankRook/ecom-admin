@@ -15,10 +15,9 @@ import {
   AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { Layout, Menu, Button, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -27,7 +26,6 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const dispatch = useDispatch();
   const userState = useSelector((state) => state?.auth?.user);
   const navigate = useNavigate();
   return (
