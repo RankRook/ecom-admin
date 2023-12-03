@@ -60,15 +60,11 @@ const Dashboard = () => {
   },
 };
 
-  const authState= useSelector(state => state?.auth?.user?.expiresIn)
-
-  console.log(authState)
   useEffect(() => {
     dispatch(getMonthlyData(config3));
     dispatch(getYearlyData(config3));
     dispatch(getOrders(config3));
   }, []);
-  console.log(ordersState);
 
   useEffect(() => {
     let monthNames = [

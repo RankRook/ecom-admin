@@ -30,17 +30,13 @@ const Addcoupon = () => {
   const getCouponId = location.pathname.split("/")[3];
 
   const newCoupon = useSelector((state) => state.coupon);
-  const {
-    couponName,
-    couponDiscount,
-    couponExpiry,
-  } = newCoupon;
+  const { couponName, couponDiscount, couponExpiry } = newCoupon;
 
   const changeDateFormet = (date) => {
     const newDate = new Date(date);
     const year = newDate.getFullYear();
-    const month = String(newDate.getMonth() + 1).padStart(2, '0'); // Ensure two digits
-    const day = String(newDate.getDate()).padStart(2, '0'); // Ensure two digits
+    const month = String(newDate.getMonth() + 1).padStart(2, "0"); // Ensure two digits
+    const day = String(newDate.getDate()).padStart(2, "0"); // Ensure two digits
     return `${year}-${month}-${day}`;
   };
   useEffect(() => {
@@ -64,7 +60,6 @@ const Addcoupon = () => {
         const data = { id: getCouponId, couponData: values };
         dispatch(updateACoupon(data));
         setTimeout(() => {
-          toast.success("Coupon Updated Successfully!");
           navigate("/admin/coupon-list");
           dispatch(resetState());
         }, 1000);
@@ -72,7 +67,6 @@ const Addcoupon = () => {
         dispatch(createCoupon(values));
         formik.resetForm();
         setTimeout(() => {
-          toast.success("Coupon Added Successfully!");
           navigate("/admin/coupon-list");
           // dispatch(resetState());
         }, 300);

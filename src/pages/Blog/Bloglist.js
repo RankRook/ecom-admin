@@ -22,8 +22,8 @@ const columns = [
   },
   {
     title: "Category",
-    dataIndex: "category",
-    sorter: (a, b) => a.category.length - b.category.length,
+    dataIndex: "bcategories",
+    sorter: (a, b) => a.bcategories.length - b.bcategories.length,
   },
 
   {
@@ -54,7 +54,7 @@ const Bloglist = () => {
     data1.push({
       key: i + 1,
       title: blogstate[i].title,
-      category: blogstate[i].category,
+      bcategories: blogstate[i].bcategories,
       action: (
         <>
           <Link

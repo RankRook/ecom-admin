@@ -24,7 +24,8 @@ const columns = [
   },
   {
     title:"Date",
-    dataIndex: "date"
+    dataIndex: "date",
+    sorter: (a, b) => new Date(a.date) - new Date(b.date),
   },
   {
     title:"Amount",

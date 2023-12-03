@@ -25,7 +25,6 @@ const Login = () => {
     validationSchema: schema,
     onSubmit: (values) => {
       dispatch(login(values));
-      alert(JSON.stringify(values, null, 2));
     },
   });
   const authState = useSelector((state) => state);
@@ -33,6 +32,7 @@ const Login = () => {
   const { user, isLoading, isError, isSuccess, message } = authState.auth;
   useEffect(() => {
     if (!user == null || isSuccess) {
+      window.location.reload();
       navigate("admin");
     }
   }, [user, isLoading, isError, isSuccess]);
@@ -45,9 +45,9 @@ const Login = () => {
               Admin<span>Dashboard</span>
             </h4>
             <h5>Sign in to your account.</h5>
-            <div className="error text-center">
+            <h1 className="error text-center">
               {message.message === "Rejected" ? "You are not an Admin" : ""}
-            </div>
+            </h1>
             <CustomInput
               classname="input"
               type="text"
@@ -56,9 +56,8 @@ const Login = () => {
               val={formik.values.email}
               onCh={formik.handleChange("email")}
             />
-
             {formik.touched.email && formik.errors.email ? (
-              <div style={{ color: "red" }}>{formik.errors.email}</div>
+              <h5 style={{ color: "red" }}>{formik.errors.email}</h5>
             ) : null}
             <CustomInput
               classname="input"
@@ -70,7 +69,7 @@ const Login = () => {
               onCh={formik.handleChange("password")}
             />
             {formik.touched.password && formik.errors.password ? (
-              <div style={{ color: "red" }}>{formik.errors.password}</div>
+              <h5 style={{ color: "red" }}>{formik.errors.password}</h5>
             ) : null}
             <button type="submit" value="Login" className="btn1">
               Login

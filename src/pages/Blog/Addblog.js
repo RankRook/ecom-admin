@@ -38,29 +38,14 @@ const Addblog = () => {
   const imgState = useSelector((state) => state.upload.images);
   const bCatState = useSelector((state) => state.blogcat.blogcats);
   const blogState = useSelector((state) => state.blog);
-  const imgBlogState = useSelector(state => state.blog.blogImages)
+  const imgBlogState = useSelector((state) => state.blog.blogImages);
   const { blogName, blogDesc, blogCategory, blogImages } = blogState;
 
   const [images, setImages] = useState([]);
-  
-
 
   useEffect(() => {
     dispatch(getBlogcats());
   }, []);
-
-  const img = [];
-  imgState.forEach((i) => {
-    img.push({
-      public_id: i.public_id,
-      url: i.url,
-    });
-  });
-
-  useEffect(() => {
-    formik.values.images = img;
-  }, [blogImages]);
-
   useEffect(() => {
     if (getBlogId !== undefined) {
       dispatch(getABlog(getBlogId));
@@ -69,9 +54,36 @@ const Addblog = () => {
       dispatch(resetState());
     }
   }, [getBlogId]);
-  console.log(blogName);
-  console.log(blogCategory);
-  console.log(blogImages);
+
+  const img = [];
+
+  useEffect(() => {
+    imgState.forEach((i) => {
+      img.push({
+        public_id: i.public_id,
+        url: i.url,
+      });
+    });
+
+    formik.setValues({
+      ...formik.values,
+      images: [...img],
+    });
+  }, [imgState]);
+
+  useEffect(() => {
+    formik.values.images = img;
+  }, [blogImages]);
+
+
+  const handleDrop = (acceptedFiles) => {
+    dispatch(uploadImg(acceptedFiles));
+    formik.setValues({
+      ...formik.values,
+      images: [...formik.values.images],
+    });
+  };
+
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -79,7 +91,7 @@ const Addblog = () => {
       title: blogName || "",
       description: blogDesc || "",
       bcategories: blogCategory || "",
-      images: imgState || "",
+      images: blogImages || "",
     },
     validationSchema: schema,
     onSubmit: (values) => {
@@ -97,7 +109,6 @@ const Addblog = () => {
         formik.resetForm();
         setTimeout(() => {
           navigate("/admin/blog-list");
-          // dispatch(resetState());
           dispatch(resetUploadState());
         }, 1000);
       }
@@ -145,7 +156,6 @@ const Addblog = () => {
             theme="snow"
             name="description"
             onChange={formik.handleChange("description")}
-            // onBlur={formik.handleBlur("description")}
             value={formik.values.description}
           />
           {formik.touched.description && formik.errors.description && (
@@ -153,9 +163,7 @@ const Addblog = () => {
           )}
           <div className="form-group">
             <div className="upload-form bg-white border-1 p-5 text-center">
-              <Dropzone
-                onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
-              >
+              <Dropzone onDrop={handleDrop}>
                 {({ getRootProps, getInputProps }) => (
                   <section>
                     <div {...getRootProps()}>
@@ -186,40 +194,41 @@ const Addblog = () => {
                   );
                 })}
               </div>
-            ) : imgBlogState === null || (
-              <div className="showimages d-flex flex-wrap gap-3">
-                {imgBlogState?.map((i, j) => {
-                  return (
-                    <div className=" position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          // dispatch(resetImgProductState());
-                          dispatch(resetImgBlogState());
-                          dispatch(delImg(i.public_id));
-                        }}
-                        className="btn-close position-absolute"
-                        style={{ top: "10px", right: "10px" }}
-                      ></button>
-                      <img src={i.url} alt="" width={200} height={200} />
-                    </div>
-                  );
-                })} 
-                {imgState?.map((i, j) => {
-                  return (
-                    <div className=" position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => dispatch(delImg(i.public_id))}
-                        className="btn-close position-absolute"
-                        style={{ top: "10px", right: "10px" }}
-                      ></button>
-                      <img src={i.url} alt="" width={200} height={200} />
-                    </div>
-                  );
-                })}
-              </div>
-                                  
+            ) : (
+              imgBlogState === null || (
+                <div className="showimages d-flex flex-wrap gap-3">
+                  {imgBlogState?.map((i, j) => {
+                    return (
+                      <div className=" position-relative" key={j}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            // dispatch(resetImgProductState());
+                            dispatch(resetImgBlogState());
+                            dispatch(delImg(i.public_id));
+                          }}
+                          className="btn-close position-absolute"
+                          style={{ top: "10px", right: "10px" }}
+                        ></button>
+                        <img src={i.url} alt="" width={200} height={200} />
+                      </div>
+                    );
+                  })}
+                  {imgState?.map((i, j) => {
+                    return (
+                      <div className=" position-relative" key={j}>
+                        <button
+                          type="button"
+                          onClick={() => dispatch(delImg(i.public_id))}
+                          className="btn-close position-absolute"
+                          style={{ top: "10px", right: "10px" }}
+                        ></button>
+                        <img src={i.url} alt="" width={200} height={200} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )
             )}
           </div>
 

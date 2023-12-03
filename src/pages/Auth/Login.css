@@ -1,76 +1,45 @@
 /*Login Page*/
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400');
-body, html {
-  font-family: 'Source Sans Pro', sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400");
+body,
+html {
+  font-family: "Source Sans Pro", sans-serif;
   background-color: #1d243d;
   padding: 0;
   margin: 0;
 }
 
-.container{
+.container {
   margin: 0;
   top: 80px;
   left: 50%;
   position: absolute;
   text-align: center;
   transform: translateX(-50%);
-  background-color: rgb( 33, 41, 66 );
+  background-color: rgb(33, 41, 66);
   border-radius: 9px;
   border-top: 10px solid #79a6fe;
-  border-bottom: 10px solid #8BD17C;
-  width: 400px;
-  height: 470px;
-  box-shadow: 1px 1px 108.8px 19.2px rgb(25,31,53);
-}
-
-.container-forgot{
-  margin: 0;
-  top: 80px;
-  left: 50%;
-  position: absolute;
-  text-align: center;
-  transform: translateX(-50%);
-  background-color: rgb( 33, 41, 66 );
-  border-radius: 9px;
-  border-top: 10px solid #79a6fe;
-  border-bottom: 10px solid #8BD17C;
-  width: 400px;
-  height: 320px;
-  box-shadow: 1px 1px 108.8px 19.2px rgb(25,31,53);
-}
-
-.container-reset{
-  margin: 0;
-  top: 80px;
-  left: 50%;
-  position: absolute;
-  text-align: center;
-  transform: translateX(-50%);
-  background-color: rgb( 33, 41, 66 );
-  border-radius: 9px;
-  border-top: 10px solid #79a6fe;
-  border-bottom: 10px solid #8BD17C;
-  width: 400px;
-  height: 400px;
-  box-shadow: 1px 1px 108.8px 19.2px rgb(25,31,53);
+  border-bottom: 10px solid #8bd17c;
+  width: 30%;
+  height: 80%;
+  /* position: relative; Thêm dòng này để sử dụng position relative */
+  box-shadow: 1px 1px 108.8px 19.2px rgb(25, 31, 53);
 }
 
 .box h4 {
-  font-family: 'Source Sans Pro', sans-serif;
-  color: #5c6bc0; 
+  font-family: "Source Sans Pro", sans-serif;
+  color: #5c6bc0;
   font-size: 18px;
-  margin-top:50px;;
+  margin-top: 50px;
   margin-bottom: 30px;
 }
 
 .box h4 span {
   color: #dfdeee;
   font-weight: lighter;
-  
 }
 
 .box h5 {
-  font-family: 'Source Sans Pro', sans-serif;
+  font-family: "Source Sans Pro", sans-serif;
   font-size: 13px;
   color: #a1a4ad;
   letter-spacing: 1.5px;
@@ -78,7 +47,8 @@ body, html {
   margin-bottom: 35px;
 }
 
-.box input[type = "text"],.box input[type = "password"] {
+.box input[type="text"],
+.box input[type="password"] {
   display: block;
   margin: 50px auto;
   background: #262e49;
@@ -88,18 +58,18 @@ body, html {
   width: 320px;
   outline: none;
   color: #d6d6d6;
-  
 }
 ::-webkit-input-placeholder {
   color: #565f79;
 }
 
-.form-floating>.form-control:focus, .form-floating>.form-control:not(:placeholder-shown) {
+.form-floating > .form-control:focus,
+.form-floating > .form-control:not(:placeholder-shown) {
   padding-top: 5px;
   padding-bottom: 0px;
 }
 
-.form-floating>label {
+.form-floating > label {
   position: absolute;
   color: white;
   top: 0;
@@ -109,19 +79,22 @@ body, html {
   pointer-events: none;
   border: 1px solid transparent;
   transform-origin: 0 0;
-  transition: opacity .1s ease-in-out,transform .1s ease-in-out;
+  transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
 }
 
-.form-floating>.form-control:focus~label, .form-floating>.form-control:not(:placeholder-shown)~label, .form-floating>.form-select~label {
-  opacity: .85;
-  transform: scale(.75) translateY(-.8rem) translateX(.15rem);
+.form-floating > .form-control:focus ~ label,
+.form-floating > .form-control:not(:placeholder-shown) ~ label,
+.form-floating > .form-select ~ label {
+  opacity: 0.85;
+  transform: scale(0.75) translateY(-0.8rem) translateX(0.15rem);
 }
 
-.box input[type = "text"]:focus,.box input[type = "password"]:focus {
-  border: 1px solid #79A6FE;
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+  border: 1px solid #79a6fe;
 }
 
-.container .a{
+.container .a {
   text-decoration: none;
 }
 
@@ -130,7 +103,7 @@ body, html {
 }
 
 .btn1 {
-  border:0;
+  border: 0;
   background: #7f5feb;
   color: #dfdeee;
   border-radius: 100px;
@@ -138,8 +111,9 @@ body, html {
   height: 49px;
   font-size: 16px;
   position: absolute;
-  top: 79%;
-  left: 8%;
+   /* Điều chỉnh vị trí bottom để nút ở gần đáy container */
+  left: 50%; /* Dùng left và transform để căn giữa theo chiều ngang */
+  transform: translateX(-50%);
   transition: 0.3s;
   cursor: pointer;
 }
@@ -163,10 +137,10 @@ body, html {
   color: #5c7fda;
 }
 
-.dnthave{
-    position: absolute;
-    top: 92%;
-    left: 24%;
+.dnthave {
+  position: absolute;
+  top: 92%;
+  left: 24%;
 }
 
 .typcn.active {

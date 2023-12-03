@@ -37,15 +37,6 @@ const Addcat = () => {
     }
   }, [getCategoryId]);
 
-  useEffect(() => {
-    if (isSuccess && createdCategory) {
-      toast.success("Product Added Successfully!");
-    }
-    if (isError) {
-      toast.error("Something Went Wrong");
-    }
-  }, [isSuccess, isError, isLoading]);
-
   const formik = useFormik({
     initialValues: {
       title: categoryName || "",
@@ -57,7 +48,6 @@ const Addcat = () => {
         const data = { id: getCategoryId, categoryData: values };
         dispatch(updateCategory(data));
         setTimeout(() => {
-          toast.success("Category Updated Succesfully");
           navigate("/admin/category-list");
           dispatch(resetState());
         }, 1000);
@@ -77,8 +67,9 @@ const Addcat = () => {
       <h3 className="mb-4 title">
         {getCategoryId !== undefined ? "Edit" : "Add"} Category
       </h3>
-      <div className="mt-4">
-        <form action="" onSubmit={formik.handleSubmit}>
+      <div className="form-group">
+        <form onSubmit={formik.handleSubmit} className="add-blog-form">
+        <label htmlFor="title">Category Title</label>
           <CustomInput
             type="text"
             id="title"

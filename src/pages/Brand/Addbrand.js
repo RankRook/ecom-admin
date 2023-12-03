@@ -41,14 +41,6 @@ const Addbrand = () => {
     }
   }, [getBrandId]);
 
-  useEffect(() => {
-    if (isSuccess && createdBrand) {
-      toast.success("Brand Added Successfully!");
-    }
-    if (isError) {
-      toast.error("Something Went Wrong");
-    }
-  }, [isSuccess, isError, isLoading]);
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -62,7 +54,6 @@ const Addbrand = () => {
         const data = { id: getBrandId, brandData: values };
         dispatch(updateBrand(data));
         setTimeout(() => {
-          toast.success("Brand Updated Successfullly!");
           navigate("/admin/brand-list")
           dispatch(resetState());
         }, 1000);
@@ -81,8 +72,9 @@ const Addbrand = () => {
       <h3 className="mb-4 title">
         {getBrandId !== undefined ? "Edit" : "Add"} Brand
       </h3>
-      <div className="mt-4">
-        <form action="" onSubmit={formik.handleSubmit}>
+      <div className="form-group">
+        <form onSubmit={formik.handleSubmit} className="add-blog-form">
+        <label htmlFor="title">Brand Title</label>
           <CustomInput
             type="text"
             id="title"

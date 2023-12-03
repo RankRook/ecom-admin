@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import categoryService from "./categoryService";
-
+import { toast } from "react-toastify";
 
 const initialState = {
   categorys: [],
@@ -96,12 +96,18 @@ export const categorySlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.createdCategory = action.payload
+        if (state.isSuccess === true) {
+          toast.info("Add Category Successfully!");
+        }
       })
       .addCase(createCategory.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error
+        if (state.isError === true) {
+          toast.info("Something Erro!");
+        }
       })
       .addCase(getACategory.pending, (state) => {
         state.isLoading = true;
@@ -126,12 +132,18 @@ export const categorySlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedCategory = action.payload
+        if (state.isSuccess === true) {
+          toast.info("Updated Category Successfully!");
+        }
       })
       .addCase(updateCategory.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error
+        if (state.isError === true) {
+          toast.info("Something Error!");
+        }
       })
       .addCase(deleteCategory.pending, (state) => {
         state.isLoading = true;
