@@ -16,7 +16,7 @@ import {
 } from "../../features/category/categorySlice";
 
 let schema = yup.object().shape({
-  title: yup.string().required("Title Brand is Required"),
+  title: yup.string().required("Title Product is Required"),
 });
 
 const Addcat = () => {
@@ -27,37 +27,32 @@ const Addcat = () => {
   const getCategoryId = location.pathname.split("/")[3];
 
   const newCategory = useSelector((state) => state.category);
-  const { isSuccess, isError, isLoading, createdCategory, categoryName } =
-    newCategory;
+  const { categoryName } = newCategory;
 
   useEffect(() => {
     if (getCategoryId !== undefined) {
       dispatch(getACategory(getCategoryId));
-      formik.values.title = categoryName;
     }
-  }, [getCategoryId]);
+  }, [getCategoryId, dispatch]);
 
   useEffect(() => {
-    if (isSuccess && createdCategory) {
-      toast.success("Product Added Successfully!");
+    if (categoryName !== undefined) {
+      formik.setFieldValue('title', categoryName);
     }
-    if (isError) {
-      toast.error("Something Went Wrong");
-    }
-  }, [isSuccess, isError, isLoading]);
+  }, [categoryName]);
 
   const formik = useFormik({
     initialValues: {
-      title: categoryName || "",
+      title: "",
     },
     validationSchema: schema,
 
     onSubmit: (values) => {
       if (getCategoryId !== undefined) {
         const data = { id: getCategoryId, categoryData: values };
+
         dispatch(updateCategory(data));
         setTimeout(() => {
-          toast.success("Category Updated Succesfully");
           navigate("/admin/category-list");
           dispatch(resetState());
         }, 1000);
@@ -77,8 +72,9 @@ const Addcat = () => {
       <h3 className="mb-4 title">
         {getCategoryId !== undefined ? "Edit" : "Add"} Category
       </h3>
-      <div className="mt-4">
-        <form action="" onSubmit={formik.handleSubmit}>
+      <div className="form-group">
+        <form onSubmit={formik.handleSubmit} className="add-blog-form">
+          <label htmlFor="title">Category Title</label>
           <CustomInput
             type="text"
             id="title"
@@ -101,5 +97,6 @@ const Addcat = () => {
     </div>
   );
 };
+
 
 export default Addcat;

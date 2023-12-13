@@ -23,7 +23,7 @@ const getABlog = async (id) => {
       {
         title: blog.blogData.title,
         description: blog.blogData.description,
-        category: blog.blogData.category,
+        bcategories: blog.blogData.bcategories,
         images: blog.blogData.images,
       },
       config

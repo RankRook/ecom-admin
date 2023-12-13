@@ -15,10 +15,9 @@ import {
   AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
-import { Link } from "react-router-dom";
 import { Layout, Menu, Button, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -27,7 +26,6 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const dispatch = useDispatch();
   const userState = useSelector((state) => state?.auth?.user);
   const navigate = useNavigate();
   return (
@@ -35,8 +33,8 @@ const MainLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">HDT</span>
-            <span className="lg-logo">Hien Dep Trai</span>
+            <span className="sm-logo">MS</span>
+            <span className="lg-logo">Music Store</span>
           </h2>
         </div>
         <Menu

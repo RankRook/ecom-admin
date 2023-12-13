@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import blogcatService from "./blogcatService";
+import { toast } from "react-toastify";
 
 export const getBlogcats = createAsyncThunk(
   "blogcat/get-blogcats",
@@ -96,12 +97,18 @@ export const blogcatSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.createdBlogcat = action.payload;
+        if (state.isSuccess === true) {
+          toast.info("Add blog category Successfully!");
+        }
       })
       .addCase(createBlogcats.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error;
+        if (state.isError === true) {
+          toast.info("Some thing error!");
+        }
       })
       .addCase(getABlogcat.pending, (state) => {
         state.isLoading = true;
@@ -126,12 +133,18 @@ export const blogcatSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedBlogcat = action.payload
+        if (state.isSuccess === true) {
+          toast.info("Updated blog category Successfully!");
+        }
       })
       .addCase(updateBlogcat.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error
+        if (state.isError === true) {
+          toast.info("Something Error!");
+        }
       })
       .addCase(deleteBlogcat.pending, (state) => {
         state.isLoading = true;

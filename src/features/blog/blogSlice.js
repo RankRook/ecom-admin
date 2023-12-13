@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, createAction } from "@reduxjs/toolkit";
 import blogService from "./blogService";
+import { toast } from "react-toastify";
 
 
 const initialState = {
@@ -96,12 +97,18 @@ export const blogSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.createdBlog = action.payload
+        if (state.isSuccess === true) {
+          toast.info("Add Blog Successfully!");
+        }
       })
       .addCase(createBlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error
+        if (state.isError === true) {
+          toast.info("Something Error!");
+        }
       }).addCase(getABlog.pending, (state) => {
         state.isLoading = true;
       })
@@ -128,12 +135,18 @@ export const blogSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.updatedBlog = action.payload
+        if (state.isSuccess === true) {
+          toast.info("Updated Blog Successfully!");
+        }
       })
       .addCase(updateBlog.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
         state.message = action.error
+        if (state.isError === true) {
+          toast.info("Updated Blog Successfully!");
+        }
       })
       .addCase(deleteBlog.pending, (state) => {
         state.isLoading = true;

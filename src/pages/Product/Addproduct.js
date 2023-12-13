@@ -45,8 +45,6 @@ const Addproduct = () => {
   const imgState = useSelector((state) => state.upload.images);
   const [images, setImages] = useState([]);
 
-
-
   const productState = useSelector((state) => state.product);
   const {
     productName,
@@ -59,24 +57,12 @@ const Addproduct = () => {
     productQuantity,
   } = productState;
 
-  console.log(productBrand)
-  console.log(productQuantity)
+  console.log(productCategory);
+  console.log(productBrand);
   useEffect(() => {
     dispatch(getBrands());
     dispatch(getCategorys());
   }, []);
-
-  const img = [];
-  imgState.forEach((i) => {
-    img.push({
-      public_id: i.public_id,
-      url: i.url,
-    });
-  });
-
-  useEffect(() => {
-    formik.values.images = img;
-  }, [productImages]);
 
   useEffect(() => {
     if (getProductId !== undefined) {
@@ -85,19 +71,46 @@ const Addproduct = () => {
     } else {
       dispatch(resetState());
     }
-  }, []);
+  }, [getProductId]);
+
+  const img = [];
+  useEffect(() => {
+    imgState.forEach((i) => {
+      img.push({
+        public_id: i.public_id,
+        url: i.url,
+      });
+    });
+
+    formik.setValues({
+      ...formik.values,
+      images: [...img],
+    });
+  }, [imgState]);
+
+  useEffect(() => {
+    formik.values.images = img;
+  }, [productImages]);
+
+  const handleDrop = (acceptedFiles) => {
+    dispatch(uploadImg(acceptedFiles));
+    formik.setValues({
+      ...formik.values,
+      images: [...formik.values.images],
+    });
+  };
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       title: productName || "",
       description: productDesc || "",
-      price: productPrice ||  "",
+      price: productPrice || "",
       brands: productBrand || "",
       pcategories: productCategory || "",
       quantity: productQuantity || "",
       tags: productTag || "",
-      images: imgState || "",
+      images: productImages || "",
     },
     validationSchema: schema,
 
@@ -106,17 +119,14 @@ const Addproduct = () => {
         const data = {
           id: getProductId,
           productData: values,
-          images: imgState,
         };
         dispatch(updateProduct(data));
-        toast.success("Product Updated Successfullly!");
         setTimeout(() => {
           navigate("/admin/product-list");
           dispatch(resetUploadState());
           dispatch(resetState());
         }, 300);
       } else {
-        toast.success("Product Added Successfully!");
         dispatch(createProduct(values));
         formik.resetForm();
         setTimeout(() => {
@@ -184,13 +194,11 @@ const Addproduct = () => {
               className="form-select"
             >
               <option value="">Select Brand</option>
-              {brandState.map((i, j) => {
-                return (
-                  <option key={j} value={i.title}>
-                    {i.title}
-                  </option>
-                );
-              })}
+              {brandState.map((item, index) => (
+                <option key={index} value={item._id}>
+                  {item.title}
+                </option>
+              ))}
             </select>
             {formik.touched.brands && formik.errors.brands && (
               <div className="error">{formik.errors.brands}</div>
@@ -225,13 +233,11 @@ const Addproduct = () => {
               className="form-select"
             >
               <option value="">Select Category</option>
-              {categoryState.map((i, j) => {
-                return (
-                  <option key={j} value={i.title}>
-                    {i.title}
-                  </option>
-                );
-              })}
+              {categoryState.map((category, index) => (
+                <option key={index} value={category._id}>
+                  {category.title}
+                </option>
+              ))}
             </select>
             {formik.touched.pcategories && formik.errors.pcategories && (
               <div className="error">{formik.errors.pcategories}</div>
@@ -252,9 +258,7 @@ const Addproduct = () => {
           </div>
           <div className="form-group">
             <div className="upload-form bg-white border-1 p-5 text-center">
-              <Dropzone
-                onDrop={(acceptedFiles) => dispatch(uploadImg(acceptedFiles))}
-              >
+              <Dropzone onDrop={handleDrop}>
                 {({ getRootProps, getInputProps }) => (
                   <section>
                     <div {...getRootProps()}>
@@ -283,39 +287,40 @@ const Addproduct = () => {
                   );
                 })}
               </div>
-            ) : imgProductState === null || (
-              <div className="showimages d-flex flex-wrap gap-3">
-                {imgProductState?.map((i, j) => {
-                  return (
-                    <div className=" position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          dispatch(resetImgProductState());
-                          dispatch(delImg(i.public_id));
-                        }}
-                        className="btn-close position-absolute"
-                        style={{ top: "10px", right: "10px" }}
-                      ></button>
-                      <img src={i.url} alt="" width={200} height={200} />
-                    </div>
-                  );
-                })} 
-                {imgState?.map((i, j) => {
-                  return (
-                    <div className=" position-relative" key={j}>
-                      <button
-                        type="button"
-                        onClick={() => dispatch(delImg(i.public_id))}
-                        className="btn-close position-absolute"
-                        style={{ top: "10px", right: "10px" }}
-                      ></button>
-                      <img src={i.url} alt="" width={200} height={200} />
-                    </div>
-                  );
-                })}
-              </div>
-                                  
+            ) : (
+              imgProductState === null || (
+                <div className="showimages d-flex flex-wrap gap-3">
+                  {imgProductState?.map((i, j) => {
+                    return (
+                      <div className=" position-relative" key={j}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            dispatch(resetImgProductState());
+                            dispatch(delImg(i.public_id));
+                          }}
+                          className="btn-close position-absolute"
+                          style={{ top: "10px", right: "10px" }}
+                        ></button>
+                        <img src={i.url} alt="" width={200} height={200} />
+                      </div>
+                    );
+                  })}
+                  {imgState?.map((i, j) => {
+                    return (
+                      <div className=" position-relative" key={j}>
+                        <button
+                          type="button"
+                          onClick={() => dispatch(delImg(i.public_id))}
+                          className="btn-close position-absolute"
+                          style={{ top: "10px", right: "10px" }}
+                        ></button>
+                        <img src={i.url} alt="" width={200} height={200} />
+                      </div>
+                    );
+                  })}
+                </div>
+              )
             )}
           </div>
 

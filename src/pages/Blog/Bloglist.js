@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import CustomModal from "../../components/CustomModal";
 import { resetState } from "../../features/blog/blogSlice";
 import { useState } from "react";
+import { getBlogcats } from "../../features/blogcat/blogcatSlice";
 
 const columns = [
   {
@@ -22,8 +23,8 @@ const columns = [
   },
   {
     title: "Category",
-    dataIndex: "category",
-    sorter: (a, b) => a.category.length - b.category.length,
+    dataIndex: "bcategories",
+    sorter: (a, b) => a.bcategories.length - b.bcategories.length,
   },
 
   {
@@ -47,14 +48,17 @@ const Bloglist = () => {
   useEffect(() => {
     dispatch(resetState());
     dispatch(getBlogs());
+    dispatch(getBlogcats())
   }, []);
   const blogstate = useSelector((state) => state.blog.blogs);
+  const blogCatState = useSelector((state) => state.blogcat.blogcats);
   const data1 = [];
   for (let i = 0; i < blogstate.length; i++) {
+    const blogcat = blogCatState.find((blogcat) => blogcat._id === blogstate[i].bcategories);
     data1.push({
       key: i + 1,
       title: blogstate[i].title,
-      category: blogstate[i].category,
+      bcategories: blogcat ? blogcat.title : "",
       action: (
         <>
           <Link
