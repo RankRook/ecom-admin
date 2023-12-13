@@ -100,7 +100,6 @@ const Addproduct = () => {
     });
   };
 
-
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -111,7 +110,7 @@ const Addproduct = () => {
       pcategories: productCategory || "",
       quantity: productQuantity || "",
       tags: productTag || "",
-      images: productImages|| "",
+      images: productImages || "",
     },
     validationSchema: schema,
 
@@ -195,13 +194,11 @@ const Addproduct = () => {
               className="form-select"
             >
               <option value="">Select Brand</option>
-              {brandState.map((i, j) => {
-                return (
-                  <option key={j} value={i.title}>
-                    {i.title}
-                  </option>
-                );
-              })}
+              {brandState.map((item, index) => (
+                <option key={index} value={item._id}>
+                  {item.title}
+                </option>
+              ))}
             </select>
             {formik.touched.brands && formik.errors.brands && (
               <div className="error">{formik.errors.brands}</div>
@@ -236,13 +233,11 @@ const Addproduct = () => {
               className="form-select"
             >
               <option value="">Select Category</option>
-              {categoryState.map((i, j) => {
-                return (
-                  <option key={j} value={i.title}>
-                    {i.title}
-                  </option>
-                );
-              })}
+              {categoryState.map((category, index) => (
+                <option key={index} value={category._id}>
+                  {category.title}
+                </option>
+              ))}
             </select>
             {formik.touched.pcategories && formik.errors.pcategories && (
               <div className="error">{formik.errors.pcategories}</div>

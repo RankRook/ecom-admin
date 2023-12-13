@@ -26,12 +26,7 @@ const Addbrand = () => {
   const getBrandId = location.pathname.split("/")[3];
   const newBrand = useSelector((state) => state.brand);
   const {
-    isSuccess,
-    isError,
-    isLoading,
-    createdBrand,
     brandName,
-    updatedBrand,
   } = newBrand;
 
   useEffect(() => {

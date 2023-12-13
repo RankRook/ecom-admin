@@ -23,7 +23,7 @@ const getAProduct  = async (id) => {
       {
         title: product.productData.title,
         description: product.productData.description,
-        pcategories: product.productData.category,
+        pcategories: product.productData.pcategories,
         brands: product.productData.brands,
         images: product.productData.images,
         price : product.productData.price,

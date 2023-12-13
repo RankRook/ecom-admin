@@ -22,14 +22,20 @@ const columns = [
   {
     title: "Product Count",
     dataIndex: "product",
+    align: 'right',
+
   },
   {
     title: "Total Price",
     dataIndex: "price",
+    align: 'right',
+
   },
   {
     title: "Total Price After Discount",
     dataIndex: "dprice",
+    align: 'right',
+
   },
   {
     title: "Status",
@@ -68,6 +74,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     let monthNames = [
+      
       "January",
       "February",
       "March",
@@ -109,6 +116,7 @@ const Dashboard = () => {
       });
     }
     setOrderData(data1)
+    console.log(dataMonthlySales);
   }, [ordersState]);
 
   const config = {
@@ -148,12 +156,7 @@ const Dashboard = () => {
         opacity: 1,
       },
     },
-    xAxis: {
-      label: {
-        autoHide: true,
-        autoRotate: false,
-      },
-    },
+
     meta: {
       type: {
         alias: "Month",
@@ -209,6 +212,7 @@ const Dashboard = () => {
         <h3 className="mb-4 title">Recent Orders</h3>
         <Table columns={columns} dataSource={orderData} />
       </div>
+    
     </div>
   );
 };

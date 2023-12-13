@@ -16,7 +16,7 @@ import {
 } from "../../features/category/categorySlice";
 
 let schema = yup.object().shape({
-  title: yup.string().required("Title Brand is Required"),
+  title: yup.string().required("Title Product is Required"),
 });
 
 const Addcat = () => {
@@ -27,25 +27,30 @@ const Addcat = () => {
   const getCategoryId = location.pathname.split("/")[3];
 
   const newCategory = useSelector((state) => state.category);
-  const { isSuccess, isError, isLoading, createdCategory, categoryName } =
-    newCategory;
+  const { categoryName } = newCategory;
 
   useEffect(() => {
     if (getCategoryId !== undefined) {
       dispatch(getACategory(getCategoryId));
-      formik.values.title = categoryName;
     }
-  }, [getCategoryId]);
+  }, [getCategoryId, dispatch]);
+
+  useEffect(() => {
+    if (categoryName !== undefined) {
+      formik.setFieldValue('title', categoryName);
+    }
+  }, [categoryName]);
 
   const formik = useFormik({
     initialValues: {
-      title: categoryName || "",
+      title: "",
     },
     validationSchema: schema,
 
     onSubmit: (values) => {
       if (getCategoryId !== undefined) {
         const data = { id: getCategoryId, categoryData: values };
+
         dispatch(updateCategory(data));
         setTimeout(() => {
           navigate("/admin/category-list");
@@ -69,7 +74,7 @@ const Addcat = () => {
       </h3>
       <div className="form-group">
         <form onSubmit={formik.handleSubmit} className="add-blog-form">
-        <label htmlFor="title">Category Title</label>
+          <label htmlFor="title">Category Title</label>
           <CustomInput
             type="text"
             id="title"
@@ -92,5 +97,6 @@ const Addcat = () => {
     </div>
   );
 };
+
 
 export default Addcat;

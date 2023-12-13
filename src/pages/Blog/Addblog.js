@@ -140,13 +140,11 @@ const Addblog = () => {
             id=""
           >
             <option value="">Select Blog Category</option>
-            {bCatState.map((i, j) => {
-              return (
-                <option key={j} value={i.title}>
-                  {i.title}
+            {bCatState.map((item, index) => (
+                <option key={index} value={item._id}>
+                  {item.title}
                 </option>
-              );
-            })}
+              ))}
           </select>
           {formik.touched.blogcat && formik.errors.blogcat && (
             <div className="error">{formik.errors.blogcat}</div>
